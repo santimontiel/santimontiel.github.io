@@ -1,10 +1,12 @@
 ---
 const { venue, title, authors, image, link } = Astro.props;
+
+import { Image } from "astro:assets";
 ---
 
 <article class="pub-item">
   <div class="pub-image">
-    <img src={image} alt={title} />
+    <img src={image.src} alt={title} />
   </div>
   <div class="pub-content">
     <span class="pub-venue">{venue} · 🎥 <a href={link}>Watch</a></span>
