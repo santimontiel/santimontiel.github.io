@@ -1,0 +1,45 @@
+---
+const { venue, title, authors, image } = Astro.props;
+---
+
+<article class="pub-item">
+  <div class="pub-image">
+    <img src={image} alt={title} />
+  </div>
+  <div class="pub-content">
+    <span class="pub-venue">{venue}</span>
+    <h3 class="pub-title">{title}</h3>
+    <p class="pub-authors">{authors}</p>
+  </div>
+</article>
+
+<style>
+.pub-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.pub-image img {
+  width: 240px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+.pub-content {
+  flex: 1;
+}
+.pub-venue {
+  font-size: 0.9rem;
+  color: #888;
+}
+.pub-title {
+  margin: 0.2rem 0;
+  font-size: 1.1rem;
+}
+.pub-authors {
+  font-size: 1rem;
+  margin: 0;
+  color: #444;
+}
+</style>

@@ -1,0 +1,59 @@
+---
+// NewsItem.astro
+export interface Props {
+  date: string;
+  text: string;
+}
+
+const { date, text } = Astro.props;
+---
+
+<div class="news-item">
+  <div class="news-date">
+    {date}
+  </div>
+  <div class="news-text">
+    {text}
+  </div>
+</div>
+
+<style>
+  .news-item {
+    display: flex;
+    gap: 1rem;
+    padding: 0.2rem;
+  }
+
+  .news-date {
+    flex: 0 0 20%;
+    font-weight: 600;
+    color: #888;
+    font-size: 0.8rem;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    padding: 0.25rem 0.4rem;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: fit-content;
+  }
+
+  .news-text {
+    font-size: 1rem;
+  }
+
+  @media (max-width: 768px) {
+    .news-item {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .news-date {
+      flex: none;
+      align-self: flex-start;
+      width: fit-content;
+    }
+  }
+</style>

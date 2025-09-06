@@ -1,0 +1,122 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import About from "../components/About.astro";
+import News from "../components/News.astro";
+import Publication from "../components/Publication.astro";
+import Talk from "../components/Talk.astro";
+import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<h1>Hello, there! I'm Santi Montiel 👨🏻‍🔬</h1>
+			<About image="/src/assets/profile.png" />
+			<h2>📰 News</h2>
+			<News
+				date="Mar. 2025"
+				text="Started an internship at the Intelligent Vehicles Lab at TU Delft, under the supervision of Dr. Holger Caesar."
+			/>
+			<News
+				date="Feb. 2024"
+				text="New journal paper accepted at Sensors MDPI! Check it out in the Research section below."
+			/>
+			<News
+				date="Nov. 2023"
+				text="Started my Ph.D. at the RobeSafe Research Group of University of Alcalá, under the supervision of Prof. Luis M. Bergasa and Dr. Angel Llamazares."
+			/>
+			<br />
+			<h2>📊 Research</h2>
+			<p>
+				Here is a selection of my publications. For a full list, please
+				check <a
+					href="https://scholar.google.com/citations?user=C84lnbUAAAAJ"
+					>Google Scholar</a
+				>.
+			</p>
+			<Publication
+				venue="27th IEEE International Conference on Intelligent Transportation Systems · Edmonton, Canada"
+				title="Fast and Efficient Transformer-based Method for Bird's Eye View Instance Prediction"
+				authors="Miguel Antunes-García, Luis M. Bergasa, Santiago Montiel-Marín, Rafael Barea, Fabio Sánchez-García and Ángel Llamazares"
+				image="/src/assets/fae_diagram.png"
+			/>
+			<Publication
+				venue="Sensors MDPI · Journal"
+				title="Point Cloud Painting for 3D Object Detection with Camera and Automotive 3+1D RADAR Fusion"
+				authors="Santiago Montiel-Marín, Ángel Llamazares, Miguel Antunes-García, Pedro A. Revenga and Luis M. Bergasa"
+				image="/src/assets/ppr_quali.png"
+			/>
+			<Publication
+				venue="ROBOT2022: Fifth Iberian Robotics Conference · Zaragoza, Spain"
+				title="Towards LiDAR and RADAR Fusion for Object Detection and Multi-Object Tracking in CARLA Simulator"
+				authors="Santiago Montiel-Marín, Carlos Gómez-Huélamo, Javier de la Peña, Miguel Antunes, Elena López-Guillén and Luis M. Bergasa"
+				image="/src/assets/liramot_quali.png"
+			/>
+			<h2>🗣️ Talks</h2>
+			<Talk
+				venue="ROSCon ES 2024 · Sevilla, Spain"
+				title="Deploying Computer Vision Algorithms in Embedded Devices with ROS2"
+				authors="Back again to ROSCon Spain!"
+				image="/src/assets/blog-placeholder-2.jpg"
+				link="https://vimeo.com/showcase/11453818/video/1029492491"
+			/>
+			<Talk
+				venue="The ROS Developers Podcast · YouTube"
+				title="Autonomous Driving Research with Open Source"
+				authors="Hosted by Ricardo Tellez, CEO of The Construct Robotics Institute"
+				image="/src/assets/blog-placeholder-3.jpg"
+				link="https://www.youtube.com/watch?v=ZXyRFiZ4Gwc"
+			/>
+			<Talk
+				venue="ROSCon Madrid 2023 · Madrid, Spain"
+				title="Developing an Electric Autonomous Vehicle in ROS/ROS2"
+				authors="First Madrid/Spanish regional conference for ROS developers!"
+				image="/src/assets/blog-placeholder-4.jpg"
+				link="https://www.youtube.com/watch?v=6V1Y2St_UR0"
+			/>
+			<h2>📝 Teaching</h2>
+			<p>
+				I have taught the following courses as part of the curriculum of
+				my Ph.D. program as Teaching Assistant, supervised by Prof. Luis
+				M. Bergasa.
+			</p>
+			<table>
+				<thead>
+					<tr>
+						<th>Title</th>
+						<th>Level</th>
+						<th>Quarters</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>Perception Systems</td>
+						<td>M.Sc.</td>
+						<td>Q2 24-25 / Q2 25-26</td>
+					</tr>
+					<tr>
+						<td>Computer Vision / Computer Vision Systems</td>
+						<td>B.Sc.</td>
+						<td>Q2 23-24 / Q1 24-25 / Q1 25-26</td>
+					</tr>
+					<tr>
+						<td
+							>Introduction to Autonomous Vehicles with CARLA
+							Simulator</td
+						>
+						<td>Workshop</td>
+						<td>Summer 2023</td>
+					</tr>
+				</tbody>
+			</table>
+		</main>
+		<Footer />
+	</body>
+</html>

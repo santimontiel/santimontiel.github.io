@@ -1,0 +1,107 @@
+---
+const { image } = Astro.props;
+---
+
+<article class="about-section">
+    <div class="about-content">
+        <p class="about-description">
+            I'm Santi Montiel, a PhD student at the University of Alcalá,
+            Madrid, Spain. Currently focused on crafting Camera-RADAR fusion
+            Deep Learning models as part of my research.
+            <br /><br />
+
+            With a former background in Industrial Engineering and Robotics, I
+            decided to pursue a PhD in the intersection of Autonomous Driving
+            and Deep Learning, entitled <b
+                >Deep Learning based on Camera-RADAR Fusion for Perception in
+                Autonomous Driving</b
+            >, under the supervision of <a
+                href="http://www.robesafe.uah.es/personal/bergasa/"
+                >Prof. Luis M. Bergasa</a
+            > and <a href="https://allamazares.jimdofree.com/"
+                >Dr. Ángel Llamazares</a
+            >, at the
+            <a href="http://www.robesafe.es/index.php/en/"
+                >RobeSafe Research Group</a
+            > of
+            <a href="https://www.uah.es/">University of Alcalá</a>. I made an
+            internship at the <a href="https://intelligent-vehicles.org//"
+                >Intelligent Vehicles Lab</a
+            > of
+            <a href="https://www.tudelft.nl/en/"
+                >Delft University of Technology</a
+            >, under the supervision of <a
+                href='https://sites.google.com/it-caesar.de/homepage/'
+                >Dr. Holger Caesar</a
+            >.
+
+            <br /><br />
+            Some more about me:
+            <ul>
+                <li>
+                    🤖 Former team member of UAH Robotics Team, speaker at
+                    ROSCon Spain.
+                </li>
+                <li>
+                    🤝 Always open to research collaborations! Feel free to get
+                    in touch with ideas.
+                </li>
+                <li>
+                    🎾 Outside research and coding, I enjoy video games,
+                    running, and playing pádel.
+                </li>
+            </ul>
+
+            📩 Contact: <a href="mailto:santiago.montiel@uah.es"
+                >santiago.montiel@uah.es</a
+            >
+        </p>
+    </div>
+    <div class="about-image">
+        <img src={image} alt="Profile picture" />
+    </div>
+</article>
+
+<style>
+    .about-section {
+        display: flex;
+        align-items: flex-start;
+        gap: 2rem;
+        margin-bottom: 2rem;
+    }
+    .about-image img {
+        width: 300px;
+        height: 360px;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+    .about-content {
+        flex: 1;
+    }
+    .about-title {
+        margin: 0.2rem 0;
+        font-size: 1.1rem;
+    }
+    .about-description {
+        margin: 0;
+        color: #444;
+        text-align: justify;
+    }
+    .emoji-list {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .emoji-list li::before {
+        content: "🤖"; /* default emoji for first li */
+        margin-right: 0.5em;
+    }
+
+    /* If you want different emojis per item */
+    .emoji-list li:nth-child(2)::before {
+        content: "🤝";
+    }
+    .emoji-list li:nth-child(3)::before {
+        content: "🎾";
+    }
+</style>
