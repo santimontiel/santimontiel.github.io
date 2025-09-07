@@ -22,26 +22,51 @@ import { Image } from "astro:assets";
   gap: 1rem;
   margin-bottom: 1rem;
 }
+
 .pub-image img {
   width: 240px;
   height: 160px;
   object-fit: cover;
   border-radius: 8px;
 }
+
 .pub-content {
   flex: 1;
 }
+
 .pub-venue {
   font-size: 0.9rem;
   color: #888;
 }
+
 .pub-title {
   margin: 0.2rem 0;
   font-size: 1.1rem;
 }
+
 .pub-authors {
   font-size: 1rem;
   margin: 0;
   color: #444;
+}
+
+/* Responsive design */
+@media (max-width: 640px) {
+  .pub-item {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .pub-image {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .pub-image img {
+    width: 100%;
+    max-width: 240px;
+    height: auto;
+  }
 }
 </style>
