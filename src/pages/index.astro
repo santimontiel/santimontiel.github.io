@@ -17,6 +17,7 @@ import liramotQuali from "../assets/liramot_quali.png";
 import blogPlaceholder2 from "../assets/blog-placeholder-2.jpg";
 import blogPlaceholder3 from "../assets/blog-placeholder-3.jpg";
 import blogPlaceholder4 from "../assets/blog-placeholder-4.jpg";
+import blogPlaceholder5 from "../assets/blog-placeholder-5.jpg";
 ---
 
 <!doctype html>
@@ -31,8 +32,12 @@ import blogPlaceholder4 from "../assets/blog-placeholder-4.jpg";
 			<About image={profilePic} />
 			<h2>📰 News</h2>
 			<News
+				date="Nov. 2025"
+				text="Gave a talk at ROSCon ES 2025 in Barcelona! Great to be back at the conference and spread the word about DINO models in robotics."
+			/>
+			<News
 				date="Sep. 2025"
-				text="Paticipated at European Researchers' Night 2025 with my research group, RobeSafe. We hosted a twofold demostration: a virtual simulation in the CARLA simulator and a live real-vehicle demo operating fully autonomously."
+				text="Participated at European Researchers' Night 2025 with my research group, RobeSafe. We hosted a twofold demonstration: a virtual simulation in the CARLA simulator and a live real-vehicle demo operating fully autonomously."
 			/>
 			<News
 				date="Mar. 2025"
@@ -80,6 +85,13 @@ import blogPlaceholder4 from "../assets/blog-placeholder-4.jpg";
 				image={liramotQuali}
 			/>
 			<h2>🗣️ Talks</h2>
+			<Talk
+				venue="ROSCon ES 2025 · Barcelona, Spain"
+				title="Foundational Vision for Your Robot: DINOv3 in Robotics Applications"
+				authors="Shared my experience applying DINO models to robotics tasks and why foundational vision is the way forward for robotics."
+				image={blogPlaceholder5}
+				link=""
+			/>
 			<Talk
 				venue="ROSCon ES 2024 · Sevilla, Spain"
 				title="Deploying Computer Vision Algorithms in Embedded Devices with ROS2"
