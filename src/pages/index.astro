@@ -10,14 +10,16 @@ import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
 
 import { Image } from "astro:assets";
 import profilePic from "../assets/santi_photo.jpg";
-import snpDiagram from "../assets/snp_diagram.png";
-import faeDiagram from "../assets/fae_diagram.png";
-import pprQuali from "../assets/ppr_quali.png";
-import liramotQuali from "../assets/liramot_quali.png";
 import blogPlaceholder2 from "../assets/blog-placeholder-2.jpg";
 import blogPlaceholder3 from "../assets/blog-placeholder-3.jpg";
 import blogPlaceholder4 from "../assets/blog-placeholder-4.jpg";
 import blogPlaceholder5 from "../assets/blog-placeholder-5.jpg";
+import { getCollection } from "astro:content";
+
+const publications = (await getCollection("publications")).sort(
+	(a, b) => b.data.year - a.data.year,
+);
+
 ---
 
 <!doctype html>
@@ -30,6 +32,14 @@ import blogPlaceholder5 from "../assets/blog-placeholder-5.jpg";
 		<main>
 			<h1>Hello, there! I'm Santi Montiel 🧙🏻‍♂️</h1>
 			<About image={profilePic} />
+			<style>
+				ul {
+					list-style-type: none;
+					margin: 0;
+					padding: 0;
+				}
+			</style>
+
 			<h2>📰 News</h2>
 			<News
 				date="Nov. 2025"
@@ -52,38 +62,35 @@ import blogPlaceholder5 from "../assets/blog-placeholder-5.jpg";
 				text="Started my Ph.D. at the RobeSafe Research Group of University of Alcalá, under the supervision of Prof. Luis M. Bergasa and Dr. Angel Llamazares."
 			/>
 			<br />
-			<h2>📊 Research</h2>
-			<p>
-				Here is a selection of my publications. For a full list, please
-				check <a
-					href="https://scholar.google.com/citations?user=C84lnbUAAAAJ"
-					>Google Scholar</a
-				>.
-			</p>
-			<Publication
-				venue="IEEE Access · Journal"
-				title="SalsaNext+: A Multimodal-Based Point Cloud Semantic Segmentation With Range and RGB Images"
-				authors="Fabio Sánchez-García, Santiago Montiel-Marín, Miguel Antunes-García, Rodrigo Gutiérrez-Moreno, Ángel Llamazares Llamazares, and Luis M. Bergasa"
-				image={snpDiagram}
-			/>
-			<Publication
-				venue="27th IEEE International Conference on Intelligent Transportation Systems · Edmonton, Canada"
-				title="Fast and Efficient Transformer-based Method for Bird's Eye View Instance Prediction"
-				authors="Miguel Antunes-García, Luis M. Bergasa, Santiago Montiel-Marín, Rafael Barea, Fabio Sánchez-García, and Ángel Llamazares"
-				image={faeDiagram}
-			/>
-			<Publication
-				venue="Sensors MDPI · Journal"
-				title="Point Cloud Painting for 3D Object Detection with Camera and Automotive 3+1D RADAR Fusion"
-				authors="Santiago Montiel-Marín, Ángel Llamazares, Miguel Antunes-García, Pedro A. Revenga, and Luis M. Bergasa"
-				image={pprQuali}
-			/>
-			<Publication
-				venue="ROBOT2022: Fifth Iberian Robotics Conference · Zaragoza, Spain"
-				title="Towards LiDAR and RADAR Fusion for Object Detection and Multi-Object Tracking in CARLA Simulator"
-				authors="Santiago Montiel-Marín, Carlos Gómez-Huélamo, Javier de la Peña, Miguel Antunes, Elena López-Guillén, and Luis M. Bergasa"
-				image={liramotQuali}
-			/>
+
+			<section>
+				<h2>📊 Research</h2>
+				<p>
+					Here is a selection of my publications. For a full list, please
+					check <a
+						href="https://scholar.google.com/citations?user=C84lnbUAAAAJ"
+						>Google Scholar</a
+					>.
+				</p>
+
+				<ul>
+					{
+						publications.map((pub) => (
+							<li>
+								<Publication
+									venue={pub.data.venue}
+									title={pub.data.title}
+									authors={pub.data.authors}
+									image={pub.data.image}
+									type={pub.data.type}
+									location={pub.data.location}
+								/>
+							</li>
+						))
+					}
+				</ul>
+			</section>
+
 			<h2>🗣️ Talks</h2>
 			<Talk
 				venue="ROSCon ES 2025 · Barcelona, Spain"

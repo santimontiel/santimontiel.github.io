@@ -1,17 +1,36 @@
 ---
-const { venue, title, authors, image } = Astro.props;
+const { venue, title, authors, image, type, location} = Astro.props;
 
 import { Image } from "astro:assets";
+import { formatAuthors, formatVenue } from "../lib/formatUtils";
+
+const formattedAuthors = formatAuthors(authors, "Santiago Montiel-Marín");
+const formattedVenue = formatVenue(venue, type, location);
+
+// Map publication types to colors
+const typeColors: Record<string, string> = {
+  preprint: '#ef4444',
+  conference: '#4e5cf7',
+  journal: '#22c55e',
+  workshop: '#f97316'
+};
+
+const badgeColor = typeColors[type?.toLowerCase()] || '#888';
 ---
 
 <article class="pub-item">
   <div class="pub-image">
-    <img src={image.src} alt={title} />
+    <Image src={image} alt={title} />
   </div>
   <div class="pub-content">
-    <span class="pub-venue">{venue}</span>
+    <div class="pub-meta">
+      <span class="pub-type" style={`background-color: ${badgeColor};`}>
+        {type ? type.charAt(0).toUpperCase() + type.slice(1).toLowerCase() : ''}
+      </span>
+      <span class="pub-venue">{formattedVenue}</span>
+    </div>
     <h3 class="pub-title">{title}</h3>
-    <p class="pub-authors">{authors}</p>
+    <p class="pub-authors" set:html={formattedAuthors}></p>
   </div>
 </article>
 
@@ -34,8 +53,24 @@ import { Image } from "astro:assets";
   flex: 1;
 }
 
+.pub-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.3rem;
+}
+
+.pub-type {
+  font-size: 0.8rem;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 6px;
+  padding: 0.25rem 0.4rem;
+  text-align: center;
+}
+
 .pub-venue {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   color: #888;
 }
 
@@ -45,7 +80,7 @@ import { Image } from "astro:assets";
 }
 
 .pub-authors {
-  font-size: 1rem;
+  font-size: 0.9rem;
   margin: 0;
   color: #444;
 }
