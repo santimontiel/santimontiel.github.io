@@ -8,7 +8,7 @@ authors:
     - Fabio Sánchez-García
     - Ángel Llamazares
 year: 2024
-venue: "IEEE ITSC 2024: 27th IEEE International Conference on Intelligent Transportation Systems"
+venue: "IEEE ITSC 2024: 27th IEEE International Conf. on Intelligent Transportation Systems"
 type: "conference"
 location: "Edmonton, Canada"
 image: "../../assets/fae_diagram.png"

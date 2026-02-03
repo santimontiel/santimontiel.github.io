@@ -1,0 +1,49 @@
+---
+// Button.astro
+interface Props {
+  href: string;
+  text?: string;
+  emoji?: string;
+  backgroundColor?: string;
+  class?: string;
+}
+
+const {
+  href,
+  text = "Button",
+  emoji = "📄",
+  backgroundColor = "rgba(255, 255, 255, 0.5)",
+  class: className = "",
+} = Astro.props;
+---
+
+<a
+  href={href}
+  class={`button icon ${className}`}
+  style={`background-color: ${backgroundColor}`}
+>
+  {text} <span class="emoji">{emoji}</span>
+</a>
+
+<style>
+  .button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 1rem;
+    text-decoration: none;
+    transition: opacity 0.2s;
+    color: white;
+    font-weight: bold;
+  }
+
+  .button:hover {
+    opacity: 0.8;
+  }
+
+  .emoji {
+    font-style: normal;
+  }
+
+</style>

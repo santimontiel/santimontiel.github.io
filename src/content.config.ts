@@ -16,6 +16,21 @@ const blogCollection = defineCollection({
 		}),
 });
 
+const projectCollection = defineCollection({
+	// Load Markdown and MDX files in the `src/content/projects/` directory.
+	loader: glob({ base: './src/content/projects', pattern: '**/*.{md,mdx,astro}' }),
+	// Type-check frontmatter using a schema
+	schema: ({ image }) =>
+		z.object({
+			title: z.string(),
+			description: z.string(),
+			// Transform string to Date object
+			pubDate: z.coerce.date(),
+			updatedDate: z.coerce.date().optional(),
+			heroImage: image().optional(),
+		}),
+});
+
 const publicationCollection = defineCollection({
 	loader: glob({
 		base: './src/content/publications',
@@ -42,5 +57,6 @@ const publicationCollection = defineCollection({
 
 export const collections = {
 	'blog': blogCollection,
+	'projects': projectCollection,
 	'publications': publicationCollection,
 };

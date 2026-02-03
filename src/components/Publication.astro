@@ -27,7 +27,7 @@ const badgeColor = typeColors[type?.toLowerCase()] || '#888';
       <span class="pub-type" style={`background-color: ${badgeColor};`}>
         {type ? type.charAt(0).toUpperCase() + type.slice(1).toLowerCase() : ''}
       </span>
-      <span class="pub-venue">{formattedVenue}</span>
+      <span class="pub-venue" set:html={formattedVenue}></span>
     </div>
     <h3 class="pub-title">{title}</h3>
     <p class="pub-authors" set:html={formattedAuthors}></p>
@@ -55,7 +55,7 @@ const badgeColor = typeColors[type?.toLowerCase()] || '#888';
 
 .pub-meta {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 0.75rem;
   margin-bottom: 0.3rem;
 }
@@ -67,11 +67,14 @@ const badgeColor = typeColors[type?.toLowerCase()] || '#888';
   border-radius: 6px;
   padding: 0.25rem 0.4rem;
   text-align: center;
+  flex-shrink: 0;
+  min-width: 85px;
 }
 
 .pub-venue {
   font-size: 0.85rem;
   color: #888;
+  line-height: 1.3;
 }
 
 .pub-title {

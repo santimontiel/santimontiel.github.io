@@ -1,0 +1,193 @@
+---
+import { Image } from "astro:assets";
+import type { CollectionEntry } from "astro:content";
+import BaseHead from "../components/BaseHead.astro";
+import Button from "../components/Button.astro";
+import Footer from "../components/Footer.astro";
+import FormattedDate from "../components/FormattedDate.astro";
+import Header from "../components/Header.astro";
+
+type Props = CollectionEntry<"projects">["data"];
+
+const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+---
+
+<html lang="en">
+	<head>
+		<BaseHead title={title} description={description} />
+		<style>
+			main {
+				width: calc(100% - 2em);
+				max-width: 100%;
+				margin: 0;
+			}
+			.hero-image {
+				width: 100%;
+			}
+			.hero-image img {
+				display: block;
+				margin: 0 auto;
+				border-radius: 12px;
+				box-shadow: var(--box-shadow);
+			}
+			.prose {
+				width: 920px;
+				max-width: calc(100% - 2em);
+				margin: auto;
+				padding: 1em;
+				color: rgb(var(--gray-dark));
+			}
+			.authors {
+				font-size: 1em;
+				margin-top: 0em;
+				margin-bottom: 0.2em;
+			}
+			.title {
+				padding: 1em 0;
+				text-align: center;
+				line-height: 1;
+			}
+			.title h1 {
+				margin: 0 0 0.2em 0;
+			}
+			.logo-row {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				column-gap: 5%; /* gap between logo items in % */
+				margin-top: 1em; /* responsive top margin */
+				width: 100%;
+			}
+			.logo-item {
+				flex: 0 0 20%; /* each item is 20% of the row width */
+				display: flex;
+				align-items: center;
+				gap: 4%; /* space between superscript and logo */
+			}
+
+			.logo-item img {
+				width: 100%; /* fill the logo-item */
+				height: auto; /* keep aspect ratio */
+				display: block;
+			}
+			.info {
+				margin: 1em 0;
+			}
+			.body {
+				width: 1080px;
+				max-width: calc(100% - 2em);
+				margin: auto;
+				padding: 1em;
+				color: rgb(var(--gray-dark));
+			}
+		</style>
+	</head>
+
+	<body>
+		<Header />
+		<main>
+			<article>
+				<div class="prose">
+					<div class="title">
+						<h1>{title}</h1>
+					</div>
+					<div class="authors" style="text-align: center;">
+						<span class="no-break"
+							><a href="https://www.santimontiel.eu/"
+								>Santiago Montiel-Marín</a
+							>
+							<sup>1</sup>,</span
+						>
+						<span class="no-break"
+							><a href="https://www.miguelantunes.eu/"
+								>Miguel Antunes-García</a
+							>
+							<sup>1</sup>,</span
+						>
+						<span class="no-break"
+							><a
+								href="https://www.linkedin.com/in/fabio-sanchez-garcia/"
+								>Fabio Sánchez-García</a
+							>
+							<sup>1</sup>,</span
+						>
+						<br />
+						<span class="no-break"
+							><a href="https://allamazares.jimdofree.com/"
+								>Ángel Llamazares</a
+							>
+							<sup>1</sup>,</span
+						>
+						<span class="no-break"
+							><a
+								href="https://sites.google.com/it-caesar.de/homepage/"
+								>Holger Caesar</a
+							>
+							<sup>2</sup>, and</span
+						>
+						<span class="no-break"
+							><a
+								href="http://www.robesafe.uah.es/personal/bergasa/"
+								>Luis M. Bergasa</a
+							>
+							<sup>1</sup></span
+						>
+					</div>
+					<div class="logo-row">
+						<div class="logo-item">
+							<sup>1</sup>
+							<img
+								src="../../src/assets/logos/UAH_logo.png"
+								alt="Logo 1"
+								style="width:120%; max-width:200px;"
+							/>
+						</div>
+
+						<div class="logo-item">
+							<sup>2</sup>
+							<img
+								src="../../src/assets/logos/TUD_logo.svg"
+								alt="Logo 2"
+								style="width:110%; max-width:200px;"
+							/>
+						</div>
+					</div>
+				</div>
+				<div class="info" style="text-align: center;">
+					<div>
+						<Button
+							href="http://arxiv.org/abs/2602.xxxxx"
+							text="arXiv"
+							emoji="📄"
+							backgroundColor="rgba(179, 27, 27, 0.8)"
+						/>
+						<Button
+							href="https://github.com/santimontiel/gaussiancar"
+							text="Code"
+							emoji="🖥️"
+							backgroundColor="rgba(35, 41, 37, 0.8)"
+						/>
+						<Button
+							href="https://huggingface.co/santimontieleu/gaussiancar"
+							text="Weights"
+							emoji="🤗"
+							backgroundColor="rgba(255, 100, 0, 0.8)"
+						/>
+					</div>
+				</div>
+				<div class="prose">
+					<div style="text-align: center;">
+						<h5>
+							🏆 Accepted to IEEE ICRA 2026! See you in Vienna,
+							Austria.
+						</h5>
+						<br />
+					</div>
+					<slot />
+				</div>
+			</article>
+		</main>
+
+		<Footer />
+	</body>
+</html>

@@ -1,0 +1,120 @@
+---
+title: 'GaussianCaR: Gaussian Splatting for Efficient Camera-Radar Fusion'
+description: 'End-to-end camera–radar BEV segmentation using Gaussian Splatting as a differentiable view transformer, achieving SOTA-level accuracy with 3.2x faster inference on nuScenes.'
+pubDate: 'Jun 01 2026'
+heroImage: '../../assets/gaussiancar.png'
+---
+
+<div style="max-width: 680px; margin: 0 auto; font-size: 0.9em;">
+    <img
+        src="../../src/assets/gaussiancar.gif"
+        alt="GaussianCaR Overview"
+    />
+    *GaussianCaR projects camera pixels and radar points into BEV using Gaussian Splatting as **universal view transformer**, enabling fast and accurate multi-sensor fusion.*
+</div>
+<br />
+
+<div style="text-align: justify;">
+## 📝 Abstract
+Robust and accurate perception of dynamic objects and map elements is crucial for autonomous vehicles performing safe navigation in complex traffic scenarios. While vision-only methods have become the de facto standard due to their technical advances, they can benefit from effective and **cost-efficient fusion with radar measurements**. In this work, we advance fusion methods by repurposing **Gaussian Splatting** as an efficient *universal view transformer* that bridges the view disparity gap, mapping both image pixels and radar points into a common Bird's-Eye View (BEV) representation.
+
+Our main contribution is **GaussianCaR**, an end-to-end network for BEV segmentation that, unlike prior BEV fusion methods, leverages Gaussian Splatting to map raw sensor information into latent features for efficient camera-radar fusion. Our architecture combines multi-scale fusion with a transformer decoder to efficiently extract BEV features.
+
+Experimental results demonstrate that our approach achieves **performance** on par with, or even surpassing, **the state-of-the-art on BEV segmentation tasks** (57.3%, 82.9%, 50.1% IoU for vehicles, roads, and lane dividers) on the nuScenes dataset, while maintaining a **3.2x faster inference** runtime.
+<br />
+
+## ⭐ Key Contributions
+- **Gaussian Splatting as a universal view transformer** for heterogeneous
+  camera–radar fusion in BEV.
+- **End-to-end differentiable pixels/points → Gaussians → BEV pipeline**
+  without voxelization or depth discretization.
+- **State-of-the-art BEV segmentation efficiency**, achieving comparable or
+  better accuracy than prior fusion methods with **3.2x faster inference**.
+<br />
+
+## 🔬 Method
+
+Existing BEV fusion methods struggle to jointly handle dense image features and sparse radar measurements without costly voxelization or attention-based lifting.
+GaussianCaR reformulates multi-modal sensor fusion as a **sensor → Gaussians → BEV transformation**. Unlike prior methods that rely on voxelization or costly attention mechanisms, we repurpose Gaussian Splatting (GS) as a universal view transformer to bridge the disparity between dense camera images and sparse radar point clouds.
+
+* **Pixels-to-Gaussians** (Camera): We lift 2D features from an EfficientViT-L2 backbone into 3D space using a coarse-to-fine strategy, predicting Gaussian parameters (position, size, opacity) to mitigate depth discretization errors.
+* **Points-to-Gaussians** (Radar): A lightweight Point Transformer v3 encodes radar returns, transforming sparse points into Gaussians with learnable covariance matrices to explicitly model spatial uncertainty.
+* **Unified Fusion**: Features from both sensors are differentiably rasterized into a common BEV grid and integrated via CMX-based fusion layers and a DPT decoder, achieving state-of-the-art segmentation (57.3% IoU) at 75.6 ms inference speed.
+
+This architecture allows GaussianCaR to achieve state-of-the-art performance on nuScenes (57.3% IoU for vehicles) while maintaining a high inference speed (75.6 ms), making it 3.2x faster than comparable fusion methods like BEVCar.
+
+<br />
+<div style="max-width: 900px; margin: 0 auto; font-size: 0.9em;">
+    <img
+        src="../../src/assets/gaussiancar_diagram.jpg"
+        alt="GaussianCaR Overview"
+    />
+**Overview of GaussianCaR.** *Camera pixels and radar points are converted into
+Gaussian primitives, splatted into BEV, and refined by a transformer decoder
+for BEV segmentation tasks.*
+</div>
+<br />
+
+## 📊 Results
+
+*Table I. BEV Vehicle Segmentation on the nuScenes Validation Set.*
+
+| Type             | Method                 | Cam Enc   | Radar Enc | IoU (↑)          |
+|------------------|------------------------|-----------|-----------|------------------|
+| **Camera-only**  | BEVFormer              | RN-101    | -         | 43.2             |
+|                  | GaussianLSS            | RN-101    | -         | 46.1             |
+|                  | SimpleBEV              | RN-101    | -         | 47.4             |
+|                  | PointBeV               | EN-64     | -         | 47.8             |
+|                  | GaussianBeV            | EN-64     | -         | 50.3             |
+| **Camera-radar** | SimpleBEV++            | RN-101    | PFE+Conv  | 52.7             |
+|                  | SimpleBEV              | RN-101    | Conv      | 55.7             |
+|                  | BEVCar                 | DINOv2/B  | PFE+Conv  | 58.4             |
+|                  | CRN                    | RN-50     | SECOND    | <ins>58.8</ins>  |
+|                  | BEVGuide               | EN-64     | SECOND    | **59.2**         |
+|                  | **GaussianCaR (ours)** | EVIT-L2   | PTv3      | 57.3             |
+
+*Table II. BEV Map Segmentation on the nuScenes Validation Set.*
+
+| Type             | Method                 | Driv. Area IoU (↑)  | Lane Div. IoU (↑)  |
+|------------------|------------------------|---------------------|--------------------|
+| **Camera-only**  | LSS                    | 72.9                | 20.0               |
+|                  | BEVFormer              | 80.1                | 25.7               |
+|                  | GaussianBeV            | 82.6                | <ins>47.4</ins>    |
+| **Camera-radar** | BEVGuide               | 76.7                | 44.2               |
+|                  | Simple-BEV++           | 81.2                | 40.4               |
+|                  | BEVCar                 | **83.3**            | 45.3               |
+|                  | **GaussianCaR (ours)** | <ins>82.9</ins>     | **50.1**           |
+
+*Table III. Inference Speed Comparison on an NVIDIA RTX 4090.*
+
+| Method                    | Veh. IoU (↑)    | ms (↓)          | FPS (↑)         |
+|---------------------------|-----------------|-----------------|-----------------|
+| Simple-BEV                | 55.7            | **57.6**        | **17.4**        |
+| Simple-BEV++              | 52.7            | 211.3           | 4.7             |
+| BEVCar                    | **58.4**        | 245.6           | 4.1             |
+| **GaussianCaR (vehicle)** | <ins>57.3</ins> | <ins>75.6</ins> | <ins>13.2</ins> |
+| **GaussianCaR (map)**     | -               | 81.1            | 12.3            |
+
+<br />
+
+## 📚 Citation
+
+```
+@article{montielmarin2026gaussiancar,
+  title         = {GaussianCaR: Gaussian Splatting for Efficient Camera-Radar Fusion},
+  author        = {Montiel-Marín, Santiago and Antunes-García, Miguel and
+                  Sánchez-García, Fabio and Llamazares, Ángel and
+                  Caesar, Holger and Bergasa, Luis M.},
+  year          = {2026},
+  eprint        = {xxxx.xxxxx},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.CV}
+}
+```
+<br />
+
+## 🤝 Acknowledgements
+<div style="font-size: 0.9em;">
+This work has been supported by projects PID2021-126623OB-I00 and PID2024-161576OB-I00, funded by MCIN/AEI/10.13039/501100011033 and co-funded by the European Regional Development Fund (ERDF, “A way of making Europe”), by project PLEC2023-010343 (INARTRANS 4.0) funded by MCIN/AEI/10.13039/501100011033, and by the R\&D program TEC-2024/TEC-62 (iRoboCity2030-CM) and ELLIS Unit Madrid, granted by the Community of Madrid.
+</div>
+</div>

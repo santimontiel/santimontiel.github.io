@@ -32,7 +32,7 @@ export function formatAuthors(
 
 /**
  * Format venue with location if applicable.
- * Appends location with middot separator for conferences and workshops.
+ * Appends location on a new line for conferences and workshops.
  *
  * @param venue Venue name.
  * @param type Publication type (conference, workshop, journal, etc.).
@@ -48,5 +48,5 @@ export function formatVenue(
     (type.toLowerCase() === 'conference' || type.toLowerCase() === 'workshop') &&
     location;
 
-  return shouldShowLocation ? `${venue} · ${location}` : venue;
+  return shouldShowLocation ? `📚 ${venue}<br/>🌍 ${location}` : `📚 ${venue}`;
 }
