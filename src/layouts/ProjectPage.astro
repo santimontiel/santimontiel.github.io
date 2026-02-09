@@ -7,6 +7,9 @@ import Footer from "../components/Footer.astro";
 import FormattedDate from "../components/FormattedDate.astro";
 import Header from "../components/Header.astro";
 
+import uahLogo from "../assets/logos/UAH_logo.png";
+import tudLogo from "../assets/logos/TUD_logo.svg";
+
 type Props = CollectionEntry<"projects">["data"];
 
 const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
@@ -136,8 +139,8 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 					<div class="logo-row">
 						<div class="logo-item">
 							<sup>1</sup>
-							<img
-								src="../../src/assets/logos/UAH_logo.png"
+							<Image
+								src={uahLogo}
 								alt="Logo 1"
 								style="width:120%; max-width:200px;"
 							/>
@@ -145,8 +148,8 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 
 						<div class="logo-item">
 							<sup>2</sup>
-							<img
-								src="../../src/assets/logos/TUD_logo.svg"
+							<Image
+								src={tudLogo}
 								alt="Logo 2"
 								style="width:110%; max-width:200px;"
 							/>
