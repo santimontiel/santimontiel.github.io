@@ -1,0 +1,235 @@
+---
+title: 'TerraSeg: Self-Supervised Ground Segmentation for Any LiDAR'
+description: 'End-to-end camera-radar BEV segmentation using Gaussian Splatting as a differentiable view transformer, achieving SOTA-level accuracy with 3.2x faster inference on nuScenes.'
+pubDate: 'Jun 03 2026'
+heroImage: '../../assets/gaussiancar.png'
+---
+import Button from '../../components/Button.astro';
+
+<style>{`
+    main {
+      width: calc(100% - 2em);
+			max-width: 100%;
+			margin: 0;
+    }
+    .hero-image {
+      width: 100%;
+    }
+    .hero-image img {
+      display: block;
+      margin: 0 auto;
+      border-radius: 12px;
+      box-shadow: var(--box-shadow);
+    }
+    .prose {
+      width: 920px;
+      max-width: calc(100% - 2em);
+      margin: auto;
+      padding: 1em;
+      color: rgb(var(--gray-dark));
+    }
+    .authors {
+      font-size: 1em;
+      margin-top: 0em;
+      margin-bottom: 0.2em;
+    }
+    .title {
+      padding: 1em 0;
+      text-align: center;
+      line-height: 1;
+    }
+    .title h1 {
+      margin: 0 0 0.2em 0;
+    }
+    .logo-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      column-gap: 5%; /* gap between logo items in % */
+      margin-top: 1em; /* responsive top margin */
+      width: 100%;
+    }
+    .logo-item {
+      flex: 0 0 20%; /* each item is 20% of the row width */
+      display: flex;
+      align-items: center;
+      gap: 4%; /* space between superscript and logo */
+    }
+    .logo-item img {
+      width: 100%; /* fill the logo-item */
+      height: auto; /* keep aspect ratio */
+      display: block;
+    }
+    .info {
+      margin: 1em 0;
+    }
+    .body {
+      width: 1080px;
+      max-width: calc(100% - 2em);
+      margin: auto;
+      padding: 1em;
+      color: rgb(var(--gray-dark));
+    }
+    `}
+</style>
+
+<div class="prose">
+
+  <div class="title">
+    <h1>TerraSeg: Self-Supervised Ground Segmentation for Any LiDAR</h1>
+  </div>
+  
+  <div class="authors" style="text-align: center;">
+      <span class="no-break"><a href="https://scholar.google.com/citations?user=54NWkMoAAAAJ&hl=en">Ted Lentsch</a><sup>1</sup>, </span>
+      <span class="no-break"><a href="https://www.santimontiel.eu/">Santiago Montiel-Marín</a><sup>2</sup>, </span>
+      <span class="no-break"><a href="https://sites.google.com/it-caesar.de/homepage/">Holger Caesar</a><sup>1</sup>, and </span>
+      <span class="no-break"><a href="http://www.gavrila.net/">Dariu Gavrila</a><sup>1</sup></span>
+  </div>
+
+  <div class="logo-row">
+    <div class="logo-item">
+        <sup>1</sup>
+        <img src="/assets/logos/TUD_logo.svg" alt="TUD Logo" style="width:110%; max-width:200px;" />
+    </div>
+    <div class="logo-item">
+        <sup>2</sup>
+    <img src="/assets/logos/UAH_logo.png" alt="UAH Logo" style="width:120%; max-width:200px;" />
+  </div>
+
+  </div>
+
+  <div class="info" style="text-align: center;">
+    <Button href="https://arxiv.org/abs/2603.27344" text="arXiv" emoji="📄" backgroundColor="rgba(179, 27, 27, 0.8)" />
+    <Button href="https://github.com/TedLentsch/terraseg" text="Code" emoji="🖥️" backgroundColor="rgba(35, 41, 37, 0.8)" />
+    <Button href="https://huggingface.co/TedLentsch/TerraSeg" text="Weights" emoji="🤗" backgroundColor="rgba(255, 100, 0, 0.8)" />
+  </div>
+
+  <div style="text-align: center;">
+    <h5>🏆 Accepted to IEEE/CVF CVPR 2026! Looking forward to presenting at Denver, Colorado.</h5>
+    <br />
+  </div>
+
+</div>
+
+<div style="margin: 0 auto; font-size: 0.9em;">
+    <img
+        src="/assets/terraseg_teaser.jpg"
+        alt="TerraSeg Overview"
+    />
+    ***Ground segmentation** for **TerraSeg** and baseline PatchWork++: qualitateive comparison between the two methods on the nuScenes, SemanticKITTI and Waymo Perception datasets.*
+</div>
+<br />
+
+<div style="text-align: justify;">
+
+## 📝 Abstract
+LiDAR perception is fundamental to robotics, enabling machines to understand their environment in 3D. A crucial task for LiDAR-based scene understanding and navigation is **ground segmentation**. However, existing methods are either **handcrafted** for specific sensor configurations or rely on **costly per-point manual labels**, severely limiting their generalization and scalability.
+
+To overcome this, we introduce **TerraSeg**, the first **self-supervised**, **domain-agnostic** model for LiDAR ground segmentation. We train TerraSeg on **OmniLiDAR**, a unified large-scale dataset that aggregates and standardizes data from **12 major public benchmarks**. Spanning almost 22 million raw scans across 15 distinct sensor models, OmniLiDAR provides unprecedented diversity for learning a highly generalizable ground model. To supervise training without human annotations, we propose **PseudoLabeler**, a novel module that generates high-quality ground and non-ground labels through self-supervised per-scan runtime optimization.
+
+Extensive evaluations demonstrate that, despite using no manual labels, TerraSeg achieves state-of-the-art results on nuScenes, SemanticKITTI, and Waymo Perception while delivering **real-time performance**.
+<br />
+
+## ⭐ Key Contributions
+- **OmniLiDAR**: unifies 12 datasets into ~22M standardized multi-sensor scans, enabling large-scale cross-domain generalization without sensor-specific tuning.
+- **PseudoLabeler**: generates high-quality ground pseudo-labels via per-scan self-supervised optimization, removing the need for manual annotations.
+- **TerraSeg**: first self-supervised, domain-agnostic LiDAR ground segmentation model, achieving SOTA performance with real-time inference.
+<br />
+
+## 🔬 Method
+
+We propose a fully self-supervised pipeline for LiDAR ground segmentation, built around three key components: OmniLiDAR, PseudoLabeler, and TerraSeg.
+
+We first construct OmniLiDAR, a large-scale and diverse dataset by aggregating raw LiDAR scans from 12 public autonomous driving benchmarks. This results in nearly 22 million scans spanning 15 different LiDAR sensor models. To ensure cross-domain consistency, we standardize all scans into a unified coordinate system, remove ego-vehicle points, and retain only geometric information (x, y, z). We deliberately process each scan independently, without temporal fusion, encouraging the model to learn generalizable geometric priors that transfer across sensors and environments.
+
+To eliminate the need for manual annotations, we introduce PseudoLabeler, a self-supervised labeling module. For each scan, we fit a smooth ground surface by optimizing a lightweight MLP directly on the raw point cloud. We define a robust asymmetric loss that penalizes points below the surface while ignoring outliers above it. Ground labels are then obtained by thresholding the vertical residuals. To improve label quality, we incorporate (1) pre-processing to remove noisy low outliers, (2) stable runtime optimization with early stopping, and (3) pillar-based post-processing to correct misclassified object bases. This allows us to generate high-quality pseudo-labels at scale.
+
+Finally, we train TerraSeg, a domain-agnostic neural network for ground segmentation. Our model builds on a Point Transformer v3 backbone, adapted to improve cross-sensor generalization by using simple geometric features and group normalization. We train it using a combination of binary cross-entropy and Lovász loss on the pseudo-labels. We provide both an accurate and a real-time variant.
+
+By decoupling offline pseudo-label generation from efficient model inference, our approach achieves scalable, real-time, and state-of-the-art performance without any manual labels.
+
+<br />
+<div style="max-width: 900px; margin: 0 auto; font-size: 0.9em;">
+    <img
+        src="/assets/terraseg_arch.jpg"
+        alt="TerraSeg Overview"
+    />
+***Overview of TerraSeg.** (a) PseudoLabeler generates self-supervised point-wise ground/non-ground labels per raw LiDAR scan.
+(b) OmniLiDAR unifies 12 major autonomous driving datasets within an aggregated framework, yielding a diverse curated corpus drawn from nearly
+22 million raw scans. (c) TerraSeg is a real-time, domain-agnostic model for ground segmentation, trained on OmniLiDAR using these
+self-supervised pseudo-labels.*
+</div>
+<br />
+
+<div style="max-width: 900px; margin: 0 auto; font-size: 0.9em;">
+    <img
+        src="/assets/terraseg_tabsota.png"
+        alt="TerraSeg Overview"
+    />
+***Table I.** Comparison and overview of main methods for ground segmentation. We effectively demonstrate that TerraSeg is the only real-time, domain-agnostic solution from a conceptual standpoint.*
+</div>
+<br />
+
+## 📊 Results
+
+We present qualitative results across the nuScenes, SemanticKITTI, and Waymo Perception datasets, demonstrating that TerraSeg achieves state-of-the-art performance in LiDAR ground segmentation without any manual labels across a wide variety of sensor configurations and environments.
+<br />
+
+<div style="max-width: 900px; margin: 0 auto; font-size: 0.9em;">
+    <img
+        src="/assets/terraseg_tabnuscenes.png"
+        alt="TerraSeg Overview"
+    />
+***Table II.** LiDAR ground segmentation on nuScenes validation split.*
+</div>
+<br />
+
+<div style="max-width: 900px; margin: 0 auto; font-size: 0.9em;">
+    <img
+        src="/assets/terraseg_tabsemantickitti.png"
+        alt="TerraSeg Overview"
+    />
+***Table III.** LiDAR ground segmentation on SemanticKITTI validation split.*
+</div>
+<br />
+
+<div style="max-width: 900px; margin: 0 auto; font-size: 0.9em;">
+    <img
+        src="/assets/terraseg_tabwaymo.png"
+        alt="TerraSeg Overview"
+    />
+***Table IV.** LiDAR ground segmentation on Waymo Perception validation split.*
+</div>
+<br />
+
+
+## 📚 Citation
+
+```
+@article{lentsch2026terraseg,
+  title         = {TerraSeg: Self-Supervised Ground Segmentation for Any LiDAR},
+  author        = {Lentsch, Ted and Montiel-Marín, Santiago and
+                  Caesar, Holger and Gavrila, Dariu},
+  year          = {2026},
+  eprint        = {2603.27344},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.CV},
+}
+```
+<br />
+
+## 🤝 Acknowledgements
+<div style="font-size: 0.9em;">
+This research has been conducted as part of the EVENTS
+project, which is funded by the European Union, under
+grant agreement No 101069614. Views and opinions ex
+pressed are, however, those of the author(s) only and do not
+necessarily reflect those of the European Union or European
+Commission. Neither the European Union nor the granting
+authority can be held responsible for them. This work has
+also been supported by project PID2024-161576OB-I00,
+funded by Spanish MICIU/AEI/10.13039/501100011033
+and co-funded by the European Regional Development
+Fund (ERDF, “A way of making Europe”).
+</div>
+</div>

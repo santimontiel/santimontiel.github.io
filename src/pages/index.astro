@@ -42,6 +42,10 @@ const publications = (await getCollection("publications")).sort(
 
 			<h2>📰 News</h2>
 			<News
+				date="Mar. 2026"
+				text="🏆 TerraSeg accepted at CVPR 2026! Honored to participate in the development of the first self-supervised, domain-agnostic model for LiDAR ground segmentation."
+			/>
+			<News
 				date="Jan. 2026"
 				text="🏆 GaussianCaR accepted at ICRA 2026! Looking forward to presenting our work on Camera-Radar fusion using Gaussian Splatting in Vienna."
 			/>
@@ -51,7 +55,7 @@ const publications = (await getCollection("publications")).sort(
 			/>
 			<News
 				date="Sep. 2025"
-				text="Participated at European Researchers' Night 2025 with my research group, RobeSafe. We hosted a twofold demonstration: a virtual simulation in the CARLA simulator and a live real-vehicle demo operating fully autonomously."
+				text="Participated at European Researchers' Night 2025 representing RobeSafe, where we hosted a twofold demonstration: a virtual simulation in the CARLA simulator and a live real-vehicle demo operating fully autonomously."
 			/>
 			<News
 				date="Mar. 2025"
@@ -79,7 +83,7 @@ const publications = (await getCollection("publications")).sort(
 
 				<ul>
 					{
-						publications.map((pub) => (
+						publications.slice(0, 5).map((pub) => (
 							<li>
 								<Publication
 									venue={pub.data.venue}
@@ -140,6 +144,11 @@ const publications = (await getCollection("publications")).sort(
 				</thead>
 				<tbody>
 					<tr>
+						<td>iRoboCity2030 Summer School 2026: ROS 2, AI and Field Robotics</td>
+						<td>Summer School</td>
+						<td>June 2026</td>
+					</tr>
+					<tr>
 						<td>Perception Systems</td>
 						<td>M.Sc.</td>
 						<td>Q2 24-25 / Q2 25-26</td>
@@ -147,7 +156,7 @@ const publications = (await getCollection("publications")).sort(
 					<tr>
 						<td>Computer Vision / Computer Vision Systems</td>
 						<td>B.Sc.</td>
-						<td>Q2 23-24 / Q1 24-25 / Q1 25-26</td>
+						<td>Q2 23-24 / Q1 24-25 / Q1-Q2 25-26</td>
 					</tr>
 					<tr>
 						<td
@@ -174,6 +183,11 @@ const publications = (await getCollection("publications")).sort(
 					</tr>
 				</thead>
 				<tbody>
+					<tr>
+						<td>Fernando Villa Castell</td>
+						<td>B.Sc.</td>
+						<td>2025-26</td>
+					</tr>
 					<tr>
 						<td>Esteban Gómez García</td>
 						<td>B.Sc.</td>
