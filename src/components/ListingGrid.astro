@@ -1,0 +1,90 @@
+---
+// ListingGrid.astro
+// Shared "grid of dated entries" listing used by the blog and projects
+// index pages — previously duplicated as near-identical markup/CSS in
+// blog/future_index.astro and projects/index.astro. Fills its container;
+// the calling page controls the container width (see --content-width*
+// tokens in global.css).
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import FormattedDate from './FormattedDate.astro';
+
+interface Item {
+	href: string;
+	title: string;
+	date: Date;
+	heroImage?: ImageMetadata;
+}
+
+interface Props {
+	items: Item[];
+}
+
+const { items } = Astro.props;
+---
+
+<ul class="listing-grid">
+	{
+		items.map((item) => (
+			<li>
+				<a href={item.href}>
+					{item.heroImage && <Image width={720} height={360} src={item.heroImage} alt="" />}
+					<h4 class="title">{item.title}</h4>
+					<p class="date">
+						<FormattedDate date={item.date} />
+					</p>
+				</a>
+			</li>
+		))
+	}
+</ul>
+
+<style>
+	.listing-grid {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 2rem;
+		list-style-type: none;
+		margin: 0;
+		padding: 0;
+	}
+	.listing-grid li {
+		width: calc(50% - 1rem);
+	}
+	.listing-grid li * {
+		text-decoration: none;
+		transition: 0.2s ease;
+	}
+	.listing-grid li img {
+		margin-bottom: 0.5rem;
+		border-radius: 12px;
+	}
+	.listing-grid li a {
+		display: block;
+	}
+	.listing-grid .title {
+		margin: 0;
+		color: rgb(var(--black));
+		line-height: 1;
+	}
+	.listing-grid .date {
+		margin: 0;
+		color: rgb(var(--gray));
+	}
+	.listing-grid li a:hover h4,
+	.listing-grid li a:hover .date {
+		color: rgb(var(--accent));
+	}
+	.listing-grid a:hover img {
+		box-shadow: var(--box-shadow);
+	}
+	@media (max-width: 720px) {
+		.listing-grid {
+			gap: 0.5em;
+		}
+		.listing-grid li {
+			width: 100%;
+			text-align: center;
+		}
+	}
+</style>
