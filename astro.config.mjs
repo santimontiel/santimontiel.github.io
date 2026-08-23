@@ -9,5 +9,3 @@ export default defineConfig({
 	site: 'https://santimontiel.github.io',
 	integrations: [mdx(), sitemap()],
 });
-
-experimental: { contentLayer: true }
