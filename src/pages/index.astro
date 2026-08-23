@@ -4,22 +4,28 @@ import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
 import About from "../components/About.astro";
 import News from "../components/News.astro";
-import Publication from "../components/Publication.astro";
-import Talk from "../components/Talk.astro";
-import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
+import EntryCard from "../components/EntryCard.astro";
+import TeachingTable from "../components/TeachingTable.astro";
+import AdvisingTable from "../components/AdvisingTable.astro";
+import { SITE_AUTHOR_NAME, SITE_DESCRIPTION, SITE_TITLE } from "../consts";
+import { teaching } from "../data/teaching";
+import { advising } from "../data/advising";
+import { formatAuthors, formatVenue, publicationBadge } from "../lib/formatUtils";
 
-import { Image } from "astro:assets";
 import profilePic from "../assets/santi_photo.jpg";
-import blogPlaceholder2 from "../assets/blog-placeholder-2.jpg";
-import blogPlaceholder3 from "../assets/blog-placeholder-3.jpg";
-import blogPlaceholder4 from "../assets/blog-placeholder-4.jpg";
-import blogPlaceholder5 from "../assets/blog-placeholder-5.jpg";
 import { getCollection } from "astro:content";
 
-const publications = (await getCollection("publications")).sort(
+const news = (await getCollection("news")).sort(
+	(a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+
+const publications = (await getCollection("publications", ({ data }) => !data.draft)).sort(
 	(a, b) => b.data.year - a.data.year,
 );
 
+const talks = (await getCollection("talks", ({ data }) => !data.draft)).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
 ---
 
 <!doctype html>
@@ -41,34 +47,15 @@ const publications = (await getCollection("publications")).sort(
 			</style>
 
 			<h2>📰 News</h2>
-			<News
-				date="Mar. 2026"
-				text="🏆 TerraSeg accepted at CVPR 2026! Honored to participate in the development of the first self-supervised, domain-agnostic model for LiDAR ground segmentation."
-			/>
-			<News
-				date="Jan. 2026"
-				text="🏆 GaussianCaR accepted at ICRA 2026! Looking forward to presenting our work on Camera-Radar fusion using Gaussian Splatting in Vienna."
-			/>
-			<News
-				date="Nov. 2025"
-				text="Gave a talk at ROSCon ES 2025 in Barcelona! Great to be back at the conference and spread the word about DINO models in robotics."
-			/>
-			<News
-				date="Sep. 2025"
-				text="Participated at European Researchers' Night 2025 representing RobeSafe, where we hosted a twofold demonstration: a virtual simulation in the CARLA simulator and a live real-vehicle demo operating fully autonomously."
-			/>
-			<News
-				date="Mar. 2025"
-				text="Started an internship at the Intelligent Vehicles Lab at TU Delft, under the supervision of Dr. Holger Caesar."
-			/>
-			<News
-				date="Feb. 2024"
-				text="New journal paper accepted at Sensors MDPI! Check it out in the Research section below."
-			/>
-			<News
-				date="Nov. 2023"
-				text="Started my Ph.D. at the RobeSafe Research Group of University of Alcalá, under the supervision of Prof. Luis M. Bergasa and Dr. Angel Llamazares."
-			/>
+			{
+				news.map((item) => (
+					<News
+						date={item.data.date.toLocaleDateString("en-US", { month: "short", year: "numeric" })}
+						text={item.data.text}
+						link={item.data.link}
+					/>
+				))
+			}
 			<br />
 
 			<section>
@@ -78,20 +65,19 @@ const publications = (await getCollection("publications")).sort(
 					check <a
 						href="https://scholar.google.com/citations?user=C84lnbUAAAAJ"
 						>Google Scholar</a
-					>.
+					>. See also the full <a href="/publications">publications page</a>.
 				</p>
 
 				<ul>
 					{
 						publications.slice(0, 5).map((pub) => (
 							<li>
-								<Publication
-									venue={pub.data.venue}
+								<EntryCard
 									title={pub.data.title}
-									authors={pub.data.authors}
-									image={pub.data.image}
-									type={pub.data.type}
-									location={pub.data.location}
+									heroImage={pub.data.heroImage}
+									badge={publicationBadge(pub.data.type)}
+									meta={formatVenue(pub.data.venue, pub.data.type, pub.data.location)}
+									authors={formatAuthors(pub.data.authors.map((a) => a.name), SITE_AUTHOR_NAME)}
 								/>
 							</li>
 						))
@@ -100,106 +86,43 @@ const publications = (await getCollection("publications")).sort(
 			</section>
 
 			<h2>🗣️ Talks</h2>
-			<Talk
-				venue="ROSCon ES 2025 · Barcelona, Spain"
-				title="Foundational Vision for Your Robot: DINOv3 in Robotics Applications"
-				authors="Shared my experience applying DINO models to robotics tasks and why foundational vision is the way forward for robotics."
-				image={blogPlaceholder5}
-				link=""
-			/>
-			<Talk
-				venue="ROSCon ES 2024 · Sevilla, Spain"
-				title="Deploying Computer Vision Algorithms in Embedded Devices with ROS2"
-				authors="Back again to ROSCon Spain!"
-				image={blogPlaceholder2}
-				link="https://vimeo.com/showcase/11453818/video/1029492491"
-			/>
-			<Talk
-				venue="The ROS Developers Podcast · YouTube"
-				title="Autonomous Driving Research with Open Source"
-				authors="Hosted by Ricardo Tellez, CEO of The Construct Robotics Institute"
-				image={blogPlaceholder3}
-				link="https://www.youtube.com/watch?v=ZXyRFiZ4Gwc"
-			/>
-			<Talk
-				venue="ROSCon Madrid 2023 · Madrid, Spain"
-				title="Developing an Electric Autonomous Vehicle in ROS/ROS2"
-				authors="First Madrid/Spanish regional conference for ROS developers!"
-				image={blogPlaceholder4}
-				link="https://www.youtube.com/watch?v=6V1Y2St_UR0"
-			/>
+			<p>
+				See also the full <a href="/talks">talks page</a>.
+			</p>
+			<ul>
+				{
+					talks.map((talk) => {
+						const metaParts = [`📚 ${talk.data.venue}`];
+						if (talk.data.location) metaParts.push(`🌍 ${talk.data.location}`);
+						if (talk.data.link) metaParts.push(`🎥 <a href="${talk.data.link}">Watch</a>`);
+						return (
+							<li>
+								<EntryCard
+									title={talk.data.title}
+									heroImage={talk.data.heroImage}
+									meta={metaParts.join(" · ")}
+									authors={talk.data.description ?? ""}
+								/>
+							</li>
+						);
+					})
+				}
+			</ul>
+
 			<h2>📝 Teaching</h2>
 			<p>
 				I have taught the following courses as part of the curriculum of
 				my Ph.D. program as Teaching Assistant, supervised by Prof. Luis
 				M. Bergasa.
 			</p>
-			<table>
-				<thead>
-					<tr>
-						<th>Title</th>
-						<th>Level</th>
-						<th>Quarters</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>iRoboCity2030 Summer School 2026: ROS 2, AI and Field Robotics</td>
-						<td>Summer School</td>
-						<td>June 2026</td>
-					</tr>
-					<tr>
-						<td>Perception Systems</td>
-						<td>M.Sc.</td>
-						<td>Q2 24-25 / Q2 25-26</td>
-					</tr>
-					<tr>
-						<td>Computer Vision / Computer Vision Systems</td>
-						<td>B.Sc.</td>
-						<td>Q2 23-24 / Q1 24-25 / Q1-Q2 25-26</td>
-					</tr>
-					<tr>
-						<td
-							>Introduction to Autonomous Vehicles with CARLA
-							Simulator</td
-						>
-						<td>Workshop</td>
-						<td>Summer 2023</td>
-					</tr>
-				</tbody>
-			</table>
+			<TeachingTable rows={teaching} />
+
 			<p>
 				I have acted as co-supervisor of the following academic works
 				jointly with Prof. Luis M. Bergasa, guiding the students in
 				their research projects:
 			</p>
-
-			<table>
-				<thead>
-					<tr>
-						<th>Name</th>
-						<th>Level</th>
-						<th>Year</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>Fernando Villa Castell</td>
-						<td>B.Sc.</td>
-						<td>2025-26</td>
-					</tr>
-					<tr>
-						<td>Esteban Gómez García</td>
-						<td>B.Sc.</td>
-						<td>2024-25</td>
-					</tr>
-					<tr>
-						<td>Fabio Sánchez García</td>
-						<td>M.Sc.</td>
-						<td>2023-24</td>
-					</tr>
-				</tbody>
-			</table>
+			<AdvisingTable rows={advising} />
 		</main>
 		<Footer />
 	</body>
