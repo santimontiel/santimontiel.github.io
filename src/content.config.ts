@@ -1,5 +1,25 @@
 import { z, defineCollection } from 'astro:content';
-import { glob } from 'astro/loaders';
+import { glob, file } from 'astro/loaders';
+
+// Shared sub-schemas reused across collections so a "person" and a "link
+// to elsewhere" always look the same, regardless of which collection
+// they show up in.
+const authorSchema = z.object({
+	name: z.string(),
+	url: z.string().url().optional(),
+});
+
+const linksSchema = z
+	.object({
+		paper: z.string().url().optional(),
+		code: z.string().url().optional(),
+		weights: z.string().url().optional(),
+		video: z.string().url().optional(),
+		demo: z.string().url().optional(),
+		poster: z.string().url().optional(),
+		slides: z.string().url().optional(),
+	})
+	.optional();
 
 const blogCollection = defineCollection({
 	// Load Markdown and MDX files in the `src/content/blog/` directory.
@@ -13,12 +33,14 @@ const blogCollection = defineCollection({
 			pubDate: z.coerce.date(),
 			updatedDate: z.coerce.date().optional(),
 			heroImage: image().optional(),
+			tags: z.array(z.string()).default([]),
+			draft: z.boolean().default(false),
 		}),
 });
 
 const projectCollection = defineCollection({
 	// Load Markdown and MDX files in the `src/content/projects/` directory.
-	loader: glob({ base: './src/content/projects', pattern: '**/*.{md,mdx,astro}' }),
+	loader: glob({ base: './src/content/projects', pattern: '**/*.{md,mdx}' }),
 	// Type-check frontmatter using a schema
 	schema: ({ image }) =>
 		z.object({
@@ -28,35 +50,84 @@ const projectCollection = defineCollection({
 			pubDate: z.coerce.date(),
 			updatedDate: z.coerce.date().optional(),
 			heroImage: image().optional(),
+
+			// Authors, each optionally pointing at their personal/scholar page
+			// and (via a 1-based index into `affiliations` below) which
+			// institution superscript they should render.
+			authors: z.array(authorSchema.extend({ affiliation: z.number().int().optional() })),
+			affiliations: z
+				.array(
+					z.object({
+						name: z.string(),
+						logo: image(),
+						url: z.string().url().optional(),
+					}),
+				)
+				.default([]),
+
+			links: linksSchema,
+			announcement: z.string().optional(),
+			draft: z.boolean().default(false),
 		}),
 });
 
 const publicationCollection = defineCollection({
 	loader: glob({
 		base: './src/content/publications',
-		pattern: '**/*.{md,mdx}'
+		pattern: '**/*.{md,mdx}',
 	}),
-	schema: ({ image }) => z.object({
-		// Metadata fields for publications.
-		title: z.string(),
-		authors: z.array(z.string()),
-		venue: z.string(),
-		year: z.number().int().min(1900).max(new Date().getFullYear()),
+	schema: ({ image }) =>
+		z.object({
+			// Metadata fields for publications.
+			title: z.string(),
+			authors: z.array(authorSchema),
+			venue: z.string(),
+			year: z.number().int().min(1900).max(new Date().getFullYear()),
 
-		// Classification of the publication type.
-		type: z.enum(['journal', 'conference', 'workshop', 'preprint', 'other']),
-		
-		// Extra optional fields.
-		image: image(),
-		url: z.string().url().optional(),
-		doi: z.string().optional(),
-		notes: z.string().optional(),
-		location: z.string().optional(),
+			// Classification of the publication type.
+			type: z.enum(['journal', 'conference', 'workshop', 'preprint', 'other']),
+
+			// Extra optional fields.
+			heroImage: image().optional(),
+			links: linksSchema,
+			location: z.string().optional(),
+			draft: z.boolean().default(false),
+		}),
+});
+
+const talksCollection = defineCollection({
+	loader: glob({ base: './src/content/talks', pattern: '**/*.{md,mdx}' }),
+	schema: ({ image }) =>
+		z.object({
+			title: z.string(),
+			// One-line blurb about the talk (not co-authors — talks are
+			// usually solo, unlike papers).
+			description: z.string().optional(),
+			venue: z.string(),
+			location: z.string().optional(),
+			pubDate: z.coerce.date(),
+			heroImage: image().optional(),
+			link: z.string().url().optional(),
+			draft: z.boolean().default(false),
+		}),
+});
+
+const newsCollection = defineCollection({
+	// News items are one-liners, not documents, so they're kept as a plain
+	// JSON array rather than individual markdown files.
+	loader: file('src/data/news.json'),
+	schema: z.object({
+		id: z.string(),
+		date: z.coerce.date(),
+		text: z.string(),
+		link: z.string().url().optional(),
 	}),
 });
 
 export const collections = {
-	'blog': blogCollection,
-	'projects': projectCollection,
-	'publications': publicationCollection,
+	blog: blogCollection,
+	projects: projectCollection,
+	publications: publicationCollection,
+	talks: talksCollection,
+	news: newsCollection,
 };
