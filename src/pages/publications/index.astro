@@ -1,0 +1,56 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import Header from '../../components/Header.astro';
+import EntryCard from '../../components/EntryCard.astro';
+import { SITE_AUTHOR_NAME, SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
+import { formatAuthors, formatVenue, publicationBadge } from '../../lib/formatUtils';
+
+const publications = (await getCollection('publications', ({ data }) => !data.draft)).sort(
+	(a, b) => b.data.year - a.data.year,
+);
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={`Publications · ${SITE_TITLE}`} description={SITE_DESCRIPTION} />
+		<style>
+			main {
+				width: var(--content-width);
+			}
+			ul {
+				list-style-type: none;
+				margin: 0;
+				padding: 0;
+			}
+		</style>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<h1>Publications</h1>
+			<p>
+				For a full, up-to-date list, see also
+				<a href="https://scholar.google.com/citations?user=C84lnbUAAAAJ">Google Scholar</a>.
+			</p>
+			<ul>
+				{
+					publications.map((pub) => (
+						<li id={pub.id}>
+							<EntryCard
+								title={pub.data.title}
+								heroImage={pub.data.heroImage}
+								badge={publicationBadge(pub.data.type)}
+								meta={formatVenue(pub.data.venue, pub.data.type, pub.data.location)}
+								authors={formatAuthors(pub.data.authors.map((a) => a.name), SITE_AUTHOR_NAME)}
+							/>
+						</li>
+					))
+				}
+			</ul>
+		</main>
+		<Footer />
+	</body>
+</html>
