@@ -1,14 +1,14 @@
 ---
 title: "SalsaNext+: A Multimodal-Based Point Cloud Semantic Segmentation With Range and RGB Images"
 authors:
-    - Fabio Sánchez-García
-    - Santiago Montiel-Marín
-    - Miguel Antunes-García
-    - Rodrigo Gutiérrez-Moreno
-    - Ángel Llamazares
-    - Luis M. Bergasa
+    - name: Fabio Sánchez-García
+    - name: Santiago Montiel-Marín
+    - name: Miguel Antunes-García
+    - name: Rodrigo Gutiérrez-Moreno
+    - name: Ángel Llamazares
+    - name: Luis M. Bergasa
 year: 2025
 venue: "IEEE Access"
 type: "journal"
-image: "../../assets/snp_diagram.png"
+heroImage: "../../assets/snp_diagram.png"
 ---

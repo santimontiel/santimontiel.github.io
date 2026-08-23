@@ -50,3 +50,23 @@ export function formatVenue(
 
   return shouldShowLocation ? `📚 ${venue}<br/>🌍 ${location}` : `📚 ${venue}`;
 }
+
+const PUBLICATION_TYPE_COLORS: Record<string, string> = {
+  preprint: '#ef4444',
+  conference: '#4e5cf7',
+  journal: '#22c55e',
+  workshop: '#f97316',
+};
+
+/**
+ * Maps a publication type to the badge text/color shown on its card.
+ *
+ * @param type Publication type (conference, workshop, journal, etc.).
+ * @returns Badge label and background color.
+ */
+export function publicationBadge(type: string): { text: string; color: string } {
+  return {
+    text: type.charAt(0).toUpperCase() + type.slice(1).toLowerCase(),
+    color: PUBLICATION_TYPE_COLORS[type.toLowerCase()] ?? '#888',
+  };
+}

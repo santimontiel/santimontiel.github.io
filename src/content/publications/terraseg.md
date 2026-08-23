@@ -1,13 +1,17 @@
 ---
 title: "TerraSeg: Self-Supervised Ground Segmentation for Any LiDAR"
 authors:
-    - Ted Lentsch
-    - Santiago Montiel-Marín
-    - Holger Caesar
-    - Dariu Gavrila
+    - name: Ted Lentsch
+    - name: Santiago Montiel-Marín
+    - name: Holger Caesar
+    - name: Dariu Gavrila
 year: 2026
 venue: "CVPR 2026: IEEE/CVF Conf. on Computer Vision and Pattern Recognition 2026"
 type: "conference"
 location: "Denver, CO, USA"
-image: "../../assets/terraseg_teaser.png"
+heroImage: "../../assets/terraseg_teaser.png"
+links:
+    paper: "https://arxiv.org/abs/2603.27344"
+    code: "https://github.com/TedLentsch/terraseg"
+    weights: "https://huggingface.co/TedLentsch/TerraSeg"
 ---
