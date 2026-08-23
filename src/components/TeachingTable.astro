@@ -1,0 +1,30 @@
+---
+import type { TeachingEntry } from '../data/teaching';
+
+interface Props {
+	rows: TeachingEntry[];
+}
+
+const { rows } = Astro.props;
+---
+
+<table>
+	<thead>
+		<tr>
+			<th>Title</th>
+			<th>Level</th>
+			<th>Quarters</th>
+		</tr>
+	</thead>
+	<tbody>
+		{
+			rows.map((row) => (
+				<tr>
+					<td>{row.title}</td>
+					<td>{row.level}</td>
+					<td>{row.quarters}</td>
+				</tr>
+			))
+		}
+	</tbody>
+</table>

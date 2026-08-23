@@ -1,0 +1,37 @@
+[
+	{
+		"id": "2026-03-terraseg-cvpr",
+		"date": "2026-03-01",
+		"text": "🏆 TerraSeg accepted at CVPR 2026! Honored to participate in the development of the first self-supervised, domain-agnostic model for LiDAR ground segmentation."
+	},
+	{
+		"id": "2026-01-gaussiancar-icra",
+		"date": "2026-01-01",
+		"text": "🏆 GaussianCaR accepted at ICRA 2026! Looking forward to presenting our work on Camera-Radar fusion using Gaussian Splatting in Vienna."
+	},
+	{
+		"id": "2025-11-roscon-es-barcelona",
+		"date": "2025-11-01",
+		"text": "Gave a talk at ROSCon ES 2025 in Barcelona! Great to be back at the conference and spread the word about DINO models in robotics."
+	},
+	{
+		"id": "2025-09-european-researchers-night",
+		"date": "2025-09-01",
+		"text": "Participated at European Researchers' Night 2025 representing RobeSafe, where we hosted a twofold demonstration: a virtual simulation in the CARLA simulator and a live real-vehicle demo operating fully autonomously."
+	},
+	{
+		"id": "2025-03-tudelft-internship",
+		"date": "2025-03-01",
+		"text": "Started an internship at the Intelligent Vehicles Lab at TU Delft, under the supervision of Dr. Holger Caesar."
+	},
+	{
+		"id": "2024-02-sensors-paper",
+		"date": "2024-02-01",
+		"text": "New journal paper accepted at Sensors MDPI! Check it out in the Research section below."
+	},
+	{
+		"id": "2023-11-phd-start",
+		"date": "2023-11-01",
+		"text": "Started my Ph.D. at the RobeSafe Research Group of University of Alcalá, under the supervision of Prof. Luis M. Bergasa and Dr. Angel Llamazares."
+	}
+]

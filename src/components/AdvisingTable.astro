@@ -1,0 +1,30 @@
+---
+import type { AdvisingEntry } from '../data/advising';
+
+interface Props {
+	rows: AdvisingEntry[];
+}
+
+const { rows } = Astro.props;
+---
+
+<table>
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Level</th>
+			<th>Year</th>
+		</tr>
+	</thead>
+	<tbody>
+		{
+			rows.map((row) => (
+				<tr>
+					<td>{row.name}</td>
+					<td>{row.level}</td>
+					<td>{row.year}</td>
+				</tr>
+			))
+		}
+	</tbody>
+</table>

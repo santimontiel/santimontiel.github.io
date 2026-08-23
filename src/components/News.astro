@@ -3,9 +3,10 @@
 export interface Props {
   date: string;
   text: string;
+  link?: string;
 }
 
-const { date, text } = Astro.props;
+const { date, text, link } = Astro.props;
 ---
 
 <div class="news-item">
@@ -13,7 +14,7 @@ const { date, text } = Astro.props;
     {date}
   </div>
   <div class="news-text">
-    {text}
+    {text} {link && <a href={link}>Read more</a>}
   </div>
 </div>
 
