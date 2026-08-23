@@ -4,7 +4,6 @@ interface Props {
   href: string;
   text?: string;
   emoji?: string;
-  backgroundColor?: string;
   class?: string;
 }
 
@@ -12,16 +11,11 @@ const {
   href,
   text = "Button",
   emoji = "📄",
-  backgroundColor = "rgba(255, 255, 255, 0.5)",
   class: className = "",
 } = Astro.props;
 ---
 
-<a
-  href={href}
-  class={`button icon ${className}`}
-  style={`background-color: ${backgroundColor}`}
->
+<a href={href} class={`button icon ${className}`}>
   {text} <span class="emoji">{emoji}</span>
 </a>
 
@@ -31,15 +25,19 @@ const {
     align-items: center;
     gap: 0.5rem;
     padding: 0.5rem 1rem;
-    border-radius: 1rem;
+    border-radius: var(--radius-full);
     text-decoration: none;
-    transition: opacity 0.2s;
-    color: white;
-    font-weight: bold;
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    background: var(--bg-surface-sunken);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-primary);
+    font-weight: 600;
   }
 
   .button:hover {
-    opacity: 0.8;
+    background: var(--accent-muted);
+    border-color: var(--accent);
+    color: var(--accent);
   }
 
   .emoji {

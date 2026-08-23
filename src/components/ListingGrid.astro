@@ -57,26 +57,26 @@ const { items } = Astro.props;
 	}
 	.listing-grid li img {
 		margin-bottom: 0.5rem;
-		border-radius: 12px;
+		border-radius: var(--radius-lg);
 	}
 	.listing-grid li a {
 		display: block;
 	}
 	.listing-grid .title {
 		margin: 0;
-		color: rgb(var(--black));
+		color: var(--text-primary);
 		line-height: 1;
 	}
 	.listing-grid .date {
 		margin: 0;
-		color: rgb(var(--gray));
+		color: var(--text-secondary);
 	}
 	.listing-grid li a:hover h4,
 	.listing-grid li a:hover .date {
-		color: rgb(var(--accent));
+		color: var(--accent);
 	}
 	.listing-grid a:hover img {
-		box-shadow: var(--box-shadow);
+		box-shadow: var(--shadow-md);
 	}
 	@media (max-width: 720px) {
 		.listing-grid {

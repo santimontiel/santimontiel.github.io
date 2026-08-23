@@ -51,22 +51,26 @@ export function formatVenue(
   return shouldShowLocation ? `📚 ${venue}<br/>🌍 ${location}` : `📚 ${venue}`;
 }
 
-const PUBLICATION_TYPE_COLORS: Record<string, string> = {
-  preprint: '#ef4444',
-  conference: '#4e5cf7',
-  journal: '#22c55e',
-  workshop: '#f97316',
-};
+const KNOWN_BADGE_TYPES = ['preprint', 'conference', 'journal', 'workshop'] as const;
+type BadgeType = (typeof KNOWN_BADGE_TYPES)[number] | 'fallback';
 
 /**
- * Maps a publication type to the badge text/color shown on its card.
+ * Maps a publication type to the badge text/type shown on its card. The
+ * `type` key drives CSS custom properties (--badge-{type}-bg/-text in
+ * global.css) so colors can differ between light/dark themes without
+ * threading two colors through component props.
  *
  * @param type Publication type (conference, workshop, journal, etc.).
- * @returns Badge label and background color.
+ * @returns Badge label and type key.
  */
-export function publicationBadge(type: string): { text: string; color: string } {
+export function publicationBadge(type: string): { text: string; type: BadgeType } {
+  const normalized = type.toLowerCase();
+  const badgeType = (KNOWN_BADGE_TYPES as readonly string[]).includes(normalized)
+    ? (normalized as BadgeType)
+    : 'fallback';
+
   return {
     text: type.charAt(0).toUpperCase() + type.slice(1).toLowerCase(),
-    color: PUBLICATION_TYPE_COLORS[type.toLowerCase()] ?? '#888',
+    type: badgeType,
   };
 }
