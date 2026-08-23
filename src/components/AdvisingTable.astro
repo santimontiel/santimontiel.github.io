@@ -8,23 +8,76 @@ interface Props {
 const { rows } = Astro.props;
 ---
 
-<table>
-	<thead>
-		<tr>
-			<th>Name</th>
-			<th>Level</th>
-			<th>Year</th>
-		</tr>
-	</thead>
-	<tbody>
-		{
-			rows.map((row) => (
-				<tr>
-					<td>{row.name}</td>
-					<td>{row.level}</td>
-					<td>{row.year}</td>
-				</tr>
-			))
+<div class="table-wrap">
+	<table>
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Level</th>
+				<th>Year</th>
+			</tr>
+		</thead>
+		<tbody>
+			{
+				rows.map((row) => (
+					<tr>
+						<td>{row.name}</td>
+						<td>{row.level}</td>
+						<td>{row.year}</td>
+					</tr>
+				))
+			}
+		</tbody>
+	</table>
+</div>
+
+<style>
+	.table-wrap {
+		overflow-x: auto;
+		border-radius: var(--radius-md);
+		border: 1px solid var(--border-subtle);
+		box-shadow: var(--shadow-sm);
+		background: var(--bg-surface);
+	}
+	table {
+		width: 100%;
+		border-collapse: collapse;
+		font-size: 0.9rem;
+	}
+	thead th {
+		text-align: left;
+		padding: 0.75rem 1rem;
+		background: var(--bg-surface-sunken);
+		color: var(--text-secondary);
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.03em;
+		font-size: 0.75rem;
+		border-bottom: 2px solid var(--border-default);
+		white-space: nowrap;
+	}
+	tbody td {
+		padding: 0.65rem 1rem;
+		border-bottom: 1px solid var(--border-subtle);
+		color: var(--text-primary);
+	}
+	tbody tr:last-child td {
+		border-bottom: none;
+	}
+	tbody tr:nth-child(even) {
+		background: var(--bg-surface-sunken);
+	}
+	tbody tr:hover {
+		background: var(--accent-muted);
+	}
+	tbody tr {
+		transition: background-color 0.15s ease;
+	}
+	@media (max-width: 640px) {
+		thead th,
+		tbody td {
+			padding: 0.5rem 0.75rem;
+			font-size: 0.85rem;
 		}
-	</tbody>
-</table>
+	}
+</style>
