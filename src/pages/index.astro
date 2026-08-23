@@ -44,6 +44,9 @@ const talks = (await getCollection("talks", ({ data }) => !data.draft)).sort(
 					margin: 0;
 					padding: 0;
 				}
+				.section-lead {
+					color: var(--text-secondary);
+				}
 			</style>
 
 			<h2>📰 News</h2>
@@ -60,7 +63,7 @@ const talks = (await getCollection("talks", ({ data }) => !data.draft)).sort(
 
 			<section>
 				<h2>📊 Research</h2>
-				<p>
+				<p class="section-lead">
 					Here is a selection of my publications. For a full list, please
 					check <a
 						href="https://scholar.google.com/citations?user=C84lnbUAAAAJ"
@@ -86,7 +89,7 @@ const talks = (await getCollection("talks", ({ data }) => !data.draft)).sort(
 			</section>
 
 			<h2>🗣️ Talks</h2>
-			<p>
+			<p class="section-lead">
 				See also the full <a href="/talks">talks page</a>.
 			</p>
 			<ul>
@@ -111,14 +114,14 @@ const talks = (await getCollection("talks", ({ data }) => !data.draft)).sort(
 			</ul>
 
 			<h2>📝 Teaching</h2>
-			<p>
+			<p class="section-lead">
 				I have taught the following courses as part of the curriculum of
 				my Ph.D. program as Teaching Assistant, supervised by Prof. Luis
 				M. Bergasa.
 			</p>
 			<TeachingTable rows={teaching} />
 
-			<p>
+			<p class="section-lead">
 				I have acted as co-supervisor of the following academic works
 				jointly with Prof. Luis M. Bergasa, guiding the students in
 				their research projects:
