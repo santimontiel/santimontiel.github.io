@@ -5,4 +5,5 @@ venue: "ROSCon ES 2025"
 location: "Barcelona, Spain"
 pubDate: "Nov 01 2025"
 heroImage: "../../assets/blog-placeholder-5.jpg"
+link: "https://vimeo.com/1177605266"
 ---
