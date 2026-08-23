@@ -27,37 +27,39 @@ const { image } = Astro.props;
             > and <a href="https://allamazares.jimdofree.com/"
                 >Dr. Ángel Llamazares</a
             >, at the <b>RobeSafe Research Group</b> of
-            <a href="https://www.uah.es/">University of Alcalá</a>. I carried
+            <a href="https://www.uah.es/"><b>University of Alcalá</b></a>. I carried
             out a research internship at the <b>Intelligent Vehicles Lab</b> of
             <a href="https://www.tudelft.nl/en/"
-                >Delft University of Technology</a
+                ><b>Delft University of Technology</b></a
             >, under the supervision of <a
                 href="https://sites.google.com/it-caesar.de/homepage/"
                 >Dr. Holger Caesar</a
             >.
+        </p>
 
-            <br /><br />
-            Some more about me:
-            <ul class="about-bullets">
-                <li class="about-bullet">
-                    <span class="about-bullet-icon">🤖</span>
-                    Former team member of UAH Robotics Team, speaker at ROSCon Spain.
-                </li>
-                <li class="about-bullet">
-                    <span class="about-bullet-icon">🤝</span>
-                    Always open to research collaborations! Feel free to get in touch
-                    with ideas.
-                </li>
-                <li class="about-bullet">
-                    <span class="about-bullet-icon">🎾</span>
-                    Outside research and coding, I enjoy video games, running, and
-                    pádel.
-                </li>
-            </ul>
+        <p class="about-more-label">Some more about me:</p>
+        <ul class="about-bullets">
+            <li class="about-bullet">
+                <span class="about-bullet-icon">🤖</span>
+                <span>Former team member of UAH Robotics Team, speaker at ROSCon Spain.</span>
+            </li>
+            <li class="about-bullet">
+                <span class="about-bullet-icon">🤝</span>
+                <span>Always open to research collaborations! Feel free to get in touch
+                with ideas.</span>
+            </li>
+            <li class="about-bullet">
+                <span class="about-bullet-icon">🎾</span>
+                <span>Outside research and coding, I enjoy video games, running, and
+                pádel.</span>
+            </li>
+        </ul>
 
-            📩 Contact: <a href="mailto:santiago.montiel@uah.es"
+        <p class="about-contact">
+            <span class="about-bullet-icon">📩</span>
+            <span>Contact: <a href="mailto:santiago.montiel@uah.es"
                 >santiago.montiel@uah.es</a
-            >
+            ></span>
         </p>
     </div>
     <div class="about-image">
@@ -98,22 +100,51 @@ const { image } = Astro.props;
 
     .about-description b {
         font-family: 'Space Grotesk', 'Inter', ui-sans-serif, system-ui, sans-serif;
+        color: var(--text-primary);
+    }
+
+    .about-description a b {
+        color: var(--accent-300);
+    }
+
+    .about-more-label {
+        margin: 1em 0 0.5em 0;
+        color: var(--text-secondary);
     }
 
     .about-bullets {
         list-style-type: none;
-        padding-left: 1.2em;
-        margin: 0.5em 0;
+        padding: 0;
+        margin: 0 0 1em 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5em;
     }
 
     .about-bullet {
-        position: relative;
-        padding-left: 2em;
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75em;
+        color: var(--text-secondary);
     }
 
     .about-bullet-icon {
-        position: absolute;
-        left: 0;
+        flex: 0 0 auto;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 1.9em;
+        height: 1.9em;
+        border-radius: var(--radius-full);
+        background: var(--bg-surface-sunken);
+    }
+
+    .about-contact {
+        display: flex;
+        align-items: center;
+        gap: 0.75em;
+        margin: 0;
+        color: var(--text-secondary);
     }
 
     /* Responsive design */
