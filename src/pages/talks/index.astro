@@ -43,6 +43,7 @@ const talks = (await getCollection('talks', ({ data }) => !data.draft)).sort(
 									heroImage={talk.data.heroImage}
 									meta={metaParts.join(' · ')}
 									authors={talk.data.description ?? ''}
+									compact
 								/>
 							</li>
 						);
