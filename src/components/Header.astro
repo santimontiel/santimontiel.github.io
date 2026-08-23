@@ -2,6 +2,7 @@
 import { SITE_TITLE } from "../consts";
 import HeaderLink from "./HeaderLink.astro";
 import SocialIcons from "./SocialIcons.astro";
+import ThemeToggle from "./ThemeToggle.astro";
 ---
 
 <header>
@@ -14,8 +15,11 @@ import SocialIcons from "./SocialIcons.astro";
 			<HeaderLink href="/publications">Publications</HeaderLink>
 			<HeaderLink href="/talks">Talks</HeaderLink>
 		</div>
-		<div class="social-links">
-			<SocialIcons />
+		<div class="actions">
+			<ThemeToggle />
+			<div class="social-links">
+				<SocialIcons />
+			</div>
 		</div>
 	</nav>
 </header>
@@ -23,8 +27,13 @@ import SocialIcons from "./SocialIcons.astro";
 	header {
 		margin: 0;
 		padding: 0 1em;
-		background: white;
-		box-shadow: 0 2px 8px rgba(var(--black), 5%);
+		background: color-mix(in srgb, var(--bg-surface) 85%, transparent);
+		backdrop-filter: blur(8px);
+		border-bottom: 1px solid var(--border-subtle);
+		box-shadow: var(--shadow-sm);
+		position: sticky;
+		top: 0;
+		z-index: 50;
 	}
 	h2 {
 		margin: 0;
@@ -34,6 +43,7 @@ import SocialIcons from "./SocialIcons.astro";
 	h2 a,
 	h2 a.active {
 		text-decoration: none;
+		color: var(--text-primary);
 	}
 	nav {
 		display: flex;
@@ -42,13 +52,17 @@ import SocialIcons from "./SocialIcons.astro";
 	}
 	nav a {
 		padding: 1em 0.5em;
-		color: var(--black);
+		color: var(--text-primary);
 		border-bottom: 4px solid transparent;
 		text-decoration: none;
 	}
 	nav a.active {
-		text-decoration: none;
 		border-bottom-color: var(--accent);
+	}
+	.actions {
+		display: flex;
+		align-items: center;
+		gap: 0.75em;
 	}
 	.social-links,
 	.social-links a {
@@ -57,6 +71,25 @@ import SocialIcons from "./SocialIcons.astro";
 	@media (max-width: 720px) {
 		.social-links {
 			display: none;
+		}
+	}
+	@media (max-width: 560px) {
+		nav {
+			flex-wrap: wrap;
+			row-gap: 0.25em;
+			padding: 0.5em 0;
+		}
+		.internal-links {
+			order: 3;
+			width: 100%;
+			display: flex;
+			gap: 0.25em;
+			overflow-x: auto;
+			-webkit-overflow-scrolling: touch;
+		}
+		.internal-links a {
+			padding: 0.5em;
+			white-space: nowrap;
 		}
 	}
 </style>

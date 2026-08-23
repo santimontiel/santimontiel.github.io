@@ -1,0 +1,25 @@
+---
+// ThemeScript.astro
+// Must run synchronously, before first paint, so the correct theme is set
+// before any pixels render — hence `is:inline` (not a module, not deferred)
+// and rendered as early as possible inside <head> (see BaseHead.astro).
+---
+
+<script is:inline>
+	(function () {
+		try {
+			var stored = localStorage.getItem('theme');
+			var theme =
+				stored === 'light' || stored === 'dark'
+					? stored
+					: window.matchMedia('(prefers-color-scheme: dark)').matches
+						? 'dark'
+						: 'light';
+			document.documentElement.setAttribute('data-theme', theme);
+		} catch (e) {
+			// localStorage/matchMedia unavailable (private browsing, disabled
+			// storage) — leave data-theme unset, CSS media-query fallback
+			// in global.css still applies the OS preference.
+		}
+	})();
+</script>

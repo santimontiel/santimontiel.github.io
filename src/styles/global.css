@@ -1,20 +1,53 @@
 /*
-  The CSS in this style tag is based off of Bear Blog's default CSS.
+  Base layout/reset rules originally adapted from Bear Blog's default CSS.
   https://github.com/HermanMartinus/bearblog/blob/297026a877bc2ab2b3bdfbd6b9f7961c350917dd/templates/styles/blog/default.css
   License MIT: https://github.com/HermanMartinus/bearblog/blob/master/LICENSE.md
  */
 
 :root {
-	--accent: #4e5cf7;
-	--accent-dark: #010b5f;
-	--black: 15, 18, 25;
-	--gray: 96, 115, 159;
-	--gray-light: 229, 233, 240;
-	--gray-dark: 34, 41, 57;
-	--gray-gradient: rgba(var(--gray-light), 50%), #fff;
-	--box-shadow:
-		0 2px 6px rgba(var(--gray), 25%), 0 8px 24px rgba(var(--gray), 33%), 0 16px 32px
-		rgba(var(--gray), 33%);
+	/* Accent scale — one blue family, shifted per theme for contrast.
+	   Light mode uses the deeper end (600/700) for AA text contrast on
+	   white; dark mode uses the lighter end (300/400) to read against a
+	   dark canvas. */
+	--accent-300: #8b98fb;
+	--accent-400: #6470f8;
+	--accent-500: #4e5cf7;
+	--accent-600: #3c46e0;
+	--accent-700: #2f37b3;
+
+	/* Semantic tokens — light theme (default). */
+	--bg-canvas: #f7f8fb;
+	--bg-surface: #ffffff;
+	--bg-surface-raised: #ffffff;
+	--bg-surface-sunken: #eef0f6;
+	--border-subtle: rgba(15, 18, 25, 0.08);
+	--border-default: rgba(15, 18, 25, 0.16);
+	--text-primary: #14161c;
+	--text-secondary: #4b5468;
+	--text-tertiary: #7a8296;
+	--accent: var(--accent-600);
+	--accent-hover: var(--accent-700);
+	--accent-muted: rgba(60, 70, 224, 0.08);
+
+	--shadow-sm: 0 1px 2px rgba(15, 18, 25, 0.06), 0 1px 1px rgba(15, 18, 25, 0.04);
+	--shadow-md: 0 4px 12px rgba(15, 18, 25, 0.08), 0 2px 4px rgba(15, 18, 25, 0.04);
+	--shadow-lg: 0 12px 32px rgba(15, 18, 25, 0.12), 0 4px 8px rgba(15, 18, 25, 0.06);
+
+	--badge-preprint-bg: #dc2626;
+	--badge-preprint-text: #ffffff;
+	--badge-conference-bg: var(--accent-600);
+	--badge-conference-text: #ffffff;
+	--badge-journal-bg: #16a34a;
+	--badge-journal-text: #ffffff;
+	--badge-workshop-bg: #ea580c;
+	--badge-workshop-text: #ffffff;
+	--badge-fallback-bg: #6b7280;
+	--badge-fallback-text: #ffffff;
+
+	--radius-sm: 6px;
+	--radius-md: 10px;
+	--radius-lg: 16px;
+	--radius-full: 999px;
 
 	/* Shared container widths, used instead of hardcoding the same pixel
 	   values separately in every listing/prose page. */
@@ -22,32 +55,84 @@
 	--content-width: 960px;
 	--content-width-wide: 1080px;
 }
-@font-face {
-	font-family: "Atkinson";
-	src: url("/fonts/atkinson-regular.woff") format("woff");
-	font-weight: 400;
-	font-style: normal;
-	font-display: swap;
+
+[data-theme='dark'] {
+	--bg-canvas: #14161c;
+	--bg-surface: #1a1d25;
+	--bg-surface-raised: #20242e;
+	--bg-surface-sunken: #0f1115;
+	--border-subtle: rgba(255, 255, 255, 0.08);
+	--border-default: rgba(255, 255, 255, 0.16);
+	--text-primary: #f5f6f8;
+	--text-secondary: #b4bacc;
+	--text-tertiary: #7c8298;
+	--accent: var(--accent-400);
+	--accent-hover: var(--accent-300);
+	--accent-muted: rgba(109, 123, 255, 0.16);
+
+	--shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+	--shadow-md: 0 4px 16px rgba(0, 0, 0, 0.45);
+	--shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.55);
+
+	--badge-preprint-bg: rgba(239, 68, 68, 0.18);
+	--badge-preprint-text: #f87171;
+	--badge-conference-bg: rgba(109, 123, 255, 0.18);
+	--badge-conference-text: #a5b4ff;
+	--badge-journal-bg: rgba(34, 197, 94, 0.18);
+	--badge-journal-text: #4ade80;
+	--badge-workshop-bg: rgba(249, 115, 22, 0.18);
+	--badge-workshop-text: #fb923c;
+	--badge-fallback-bg: rgba(148, 163, 184, 0.18);
+	--badge-fallback-text: #cbd5e1;
 }
-@font-face {
-	font-family: "Atkinson";
-	src: url("/fonts/atkinson-bold.woff") format("woff");
-	font-weight: 700;
-	font-style: normal;
-	font-display: swap;
+
+/* CSS-only dark mode for visitors with JavaScript disabled: if the
+   anti-FOUC inline script (ThemeScript.astro) never ran, no [data-theme]
+   attribute exists, so fall back to the OS preference. */
+@media (prefers-color-scheme: dark) {
+	:root:not([data-theme]) {
+		--bg-canvas: #14161c;
+		--bg-surface: #1a1d25;
+		--bg-surface-raised: #20242e;
+		--bg-surface-sunken: #0f1115;
+		--border-subtle: rgba(255, 255, 255, 0.08);
+		--border-default: rgba(255, 255, 255, 0.16);
+		--text-primary: #f5f6f8;
+		--text-secondary: #b4bacc;
+		--text-tertiary: #7c8298;
+		--accent: var(--accent-400);
+		--accent-hover: var(--accent-300);
+		--accent-muted: rgba(109, 123, 255, 0.16);
+
+		--shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+		--shadow-md: 0 4px 16px rgba(0, 0, 0, 0.45);
+		--shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.55);
+
+		--badge-preprint-bg: rgba(239, 68, 68, 0.18);
+		--badge-preprint-text: #f87171;
+		--badge-conference-bg: rgba(109, 123, 255, 0.18);
+		--badge-conference-text: #a5b4ff;
+		--badge-journal-bg: rgba(34, 197, 94, 0.18);
+		--badge-journal-text: #4ade80;
+		--badge-workshop-bg: rgba(249, 115, 22, 0.18);
+		--badge-workshop-text: #fb923c;
+		--badge-fallback-bg: rgba(148, 163, 184, 0.18);
+		--badge-fallback-text: #cbd5e1;
+	}
 }
+
 body {
-	font-family: "Atkinson", sans-serif;
+	font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
 	margin: 0;
 	padding: 0;
 	text-align: left;
-	background: linear-gradient(var(--gray-gradient)) no-repeat;
-	background-size: 100% 600px;
+	background: var(--bg-canvas);
 	word-wrap: break-word;
 	overflow-wrap: break-word;
-	color: rgb(var(--gray-dark));
+	color: var(--text-primary);
 	font-size: 18px;
 	line-height: 1.5;
+	transition: background-color 0.2s ease, color 0.2s ease;
 }
 main {
 	width: 900px;
@@ -62,11 +147,14 @@ h4,
 h5,
 h6 {
 	margin: 0 0 0.5rem 0;
-	color: rgb(var(--black));
+	color: var(--text-primary);
+	font-family: 'Space Grotesk', 'Inter', ui-sans-serif, system-ui, sans-serif;
+	font-weight: 600;
 	font-size: 1em;
 }
 h1 {
 	font-size: 2em;
+	font-weight: 700;
 }
 h2 {
 	font-size: 1.4em;
@@ -88,7 +176,7 @@ a {
 	color: var(--accent);
 }
 a:hover {
-	color: var(--accent);
+	color: var(--accent-hover);
 }
 p {
 	margin-bottom: 0.6em;
@@ -109,16 +197,17 @@ table {
 img {
 	max-width: 100%;
 	height: auto;
-	border-radius: 8px;
+	border-radius: var(--radius-lg);
 }
 code {
 	padding: 2px 5px;
-	background-color: rgb(var(--gray-light));
-	border-radius: 2px;
+	background-color: var(--bg-surface-sunken);
+	border-radius: var(--radius-sm);
 }
 pre {
 	padding: 1.5em;
-	border-radius: 8px;
+	border-radius: var(--radius-lg);
+	background-color: var(--bg-surface-sunken);
 }
 pre > code {
 	all: unset;
@@ -128,10 +217,11 @@ blockquote {
 	padding: 0 0 0 20px;
 	margin: 0px;
 	font-size: 1.333em;
+	color: var(--text-secondary);
 }
 hr {
 	border: none;
-	border-top: 1px solid rgb(var(--gray-light));
+	border-top: 1px solid var(--border-subtle);
 }
 @media (max-width: 720px) {
 	body {
@@ -155,15 +245,15 @@ hr {
 .project-hero-image img {
 	display: block;
 	margin: 0 auto;
-	border-radius: 12px;
-	box-shadow: var(--box-shadow);
+	border-radius: var(--radius-lg);
+	box-shadow: var(--shadow-lg);
 }
 .project-prose {
 	width: var(--content-width);
 	max-width: calc(100% - 2em);
 	margin: auto;
 	padding: 1em;
-	color: rgb(var(--gray-dark));
+	color: var(--text-primary);
 	text-align: center;
 }
 .project-title {
@@ -174,7 +264,7 @@ hr {
 	margin: 0 0 0.2em 0;
 }
 .project-date {
-	color: rgb(var(--gray));
+	color: var(--text-secondary);
 }
 .project-authors {
 	font-size: 1em;
@@ -199,6 +289,7 @@ hr {
 	width: 100%;
 	height: auto;
 	display: block;
+	border-radius: 0;
 }
 .project-info {
 	margin: 1em 0;
@@ -211,7 +302,7 @@ hr {
 	max-width: calc(100% - 2em);
 	margin: auto;
 	padding: 1em;
-	color: rgb(var(--gray-dark));
+	color: var(--text-primary);
 }
 
 .sr-only {
