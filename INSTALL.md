@@ -24,8 +24,8 @@ source ~/.bashrc   # or ~/.zshrc if you use zsh
 
 ## 2. Install Node.js
 
-This installs the latest LTS release of Node.js (v24.x at time of writing) and
-its bundled `npm`:
+Astro 7 requires **Node.js >= 22.12** (see `engines` in `package.json`). This
+installs the latest LTS release (v24.x at time of writing) and its bundled `npm`:
 
 ```sh
 nvm install --lts

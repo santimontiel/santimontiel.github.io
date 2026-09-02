@@ -1,23 +1,24 @@
-import { z, defineCollection } from 'astro:content';
+import { defineCollection } from 'astro:content';
 import { glob, file } from 'astro/loaders';
+import { z } from 'astro/zod';
 
 // Shared sub-schemas reused across collections so a "person" and a "link
 // to elsewhere" always look the same, regardless of which collection
 // they show up in.
 const authorSchema = z.object({
 	name: z.string(),
-	url: z.string().url().optional(),
+	url: z.url().optional(),
 });
 
 const linksSchema = z
 	.object({
-		paper: z.string().url().optional(),
-		code: z.string().url().optional(),
-		weights: z.string().url().optional(),
-		video: z.string().url().optional(),
-		demo: z.string().url().optional(),
-		poster: z.string().url().optional(),
-		slides: z.string().url().optional(),
+		paper: z.url().optional(),
+		code: z.url().optional(),
+		weights: z.url().optional(),
+		video: z.url().optional(),
+		demo: z.url().optional(),
+		poster: z.url().optional(),
+		slides: z.url().optional(),
 	})
 	.optional();
 
@@ -60,7 +61,7 @@ const projectCollection = defineCollection({
 					z.object({
 						name: z.string(),
 						logo: image(),
-						url: z.string().url().optional(),
+						url: z.url().optional(),
 					}),
 				)
 				.default([]),
@@ -107,7 +108,7 @@ const talksCollection = defineCollection({
 			location: z.string().optional(),
 			pubDate: z.coerce.date(),
 			heroImage: image().optional(),
-			link: z.string().url().optional(),
+			link: z.url().optional(),
 			draft: z.boolean().default(false),
 		}),
 });
@@ -120,7 +121,7 @@ const newsCollection = defineCollection({
 		id: z.string(),
 		date: z.coerce.date(),
 		text: z.string(),
-		link: z.string().url().optional(),
+		link: z.url().optional(),
 	}),
 });
 
