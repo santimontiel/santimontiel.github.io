@@ -32,8 +32,9 @@ const publications = (await getCollection('publications', ({ data }) => !data.dr
 		<main>
 			<h1>Publications</h1>
 			<p>
-				For a full, up-to-date list, see also
-				<a href="https://scholar.google.com/citations?user=C84lnbUAAAAJ">Google Scholar</a>.
+				For a full, up-to-date list, see also <a
+					href="https://scholar.google.com/citations?user=C84lnbUAAAAJ">Google Scholar</a
+				>.
 			</p>
 			<ul>
 				{
@@ -45,6 +46,7 @@ const publications = (await getCollection('publications', ({ data }) => !data.dr
 								badge={publicationBadge(pub.data.type)}
 								meta={formatVenue(pub.data.venue, pub.data.type, pub.data.location)}
 								authors={formatAuthors(pub.data.authors.map((a) => a.name), SITE_AUTHOR_NAME)}
+								awards={pub.data.awards}
 							/>
 						</li>
 					))

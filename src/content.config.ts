@@ -92,6 +92,9 @@ const publicationCollection = defineCollection({
 			heroImage: image().optional(),
 			links: linksSchema,
 			location: z.string().optional(),
+			// Paper awards (e.g. "Best Paper Runner-Up Award"), shown as a
+			// highlighted line on the card.
+			awards: z.array(z.string()).default([]),
 			draft: z.boolean().default(false),
 		}),
 });

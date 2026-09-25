@@ -1,5 +1,35 @@
 [
 	{
+		"id": "2026-10-roscon-es-valencia",
+		"date": "2026-10-01",
+		"text": "Giving a talk at ROSCon ES 2026 in Valencia! I will present the state of RoboRacer (scaled autonomous racing) at the University of Alcalá."
+	},
+	{
+		"id": "2026-09-tokengraph3d-drivex-award",
+		"date": "2026-09-01",
+		"text": "🏆 TokenGraph3D wins the Best Paper Runner-Up Award in the Archival Track of the DriveX Workshop at ECCV 2026 in Malmö!"
+	},
+	{
+		"id": "2026-09-ellis-ssad",
+		"date": "2026-09-02",
+		"text": "Attended the ELLIS Summer School on Autonomous Driving (SSAD) 2026 in Barcelona, four intensive days of keynotes, panels and poster sessions on perception, world models and end-to-end driving."
+	},
+	{
+		"id": "2026-08-unia-ai-summer-school",
+		"date": "2026-08-02",
+		"text": "Attended the Fundamentos de IA Summer School at Universidad Internacional de Andalucía, hosted in my hometown, Baeza. A great week on generative models and AI applications in health, computer vision and language, completed with the top grade (10/10)."
+	},
+	{
+		"id": "2026-08-tokengraph3d-drivex",
+		"date": "2026-08-01",
+		"text": "🏆 TokenGraph3D accepted as an oral at the DriveX Workshop at ECCV 2026! Joint work with TU Delft on emergent 3D instance segmentation from self-supervised Point Transformers."
+	},
+	{
+		"id": "2026-06-irobocity-summer-school",
+		"date": "2026-06-01",
+		"text": "Taught at the iRoboCity2030 Summer School on ROS 2, AI and Field Robotics in Madrid, giving a lecture on ROS 2 for scaled autonomous racing cars."
+	},
+	{
 		"id": "2026-03-terraseg-cvpr",
 		"date": "2026-03-01",
 		"text": "🏆 TerraSeg accepted at CVPR 2026! Honored to participate in the development of the first self-supervised, domain-agnostic model for LiDAR ground segmentation."
