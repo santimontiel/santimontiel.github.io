@@ -1,0 +1,56 @@
+---
+// SectionHeading.astro
+// Editorial section header: a tabular section number and a hairline rule on
+// one row, with the heading itself underneath. Used to give the homepage a
+// consistent, numbered rhythm (01, 02, 03 ...).
+interface Props {
+	/** Section number — a plain integer is zero-padded to two digits. */
+	number: number | string;
+	id?: string;
+}
+
+const { number, id } = Astro.props;
+const label = typeof number === 'number' ? String(number).padStart(2, '0') : number;
+---
+
+<div class="section-head">
+	<div class="section-head-top">
+		<span class="section-num">{label}</span>
+		<span class="section-rule" aria-hidden="true"></span>
+	</div>
+	<h2 id={id}><slot /></h2>
+</div>
+
+<style>
+	.section-head {
+		margin: 0 0 1rem 0;
+	}
+
+	.section-head-top {
+		display: flex;
+		align-items: center;
+		gap: 0.85rem;
+		margin-bottom: 0.45rem;
+	}
+
+	.section-num {
+		font-family: 'Space Grotesk', 'Inter', ui-sans-serif, system-ui, sans-serif;
+		font-size: 0.78rem;
+		font-weight: 600;
+		letter-spacing: 0.16em;
+		color: var(--text-tertiary);
+		font-variant-numeric: tabular-nums;
+		line-height: 1;
+	}
+
+	.section-rule {
+		flex: 1;
+		height: 1px;
+		background: var(--border-subtle);
+	}
+
+	.section-head h2 {
+		margin: 0;
+		letter-spacing: -0.01em;
+	}
+</style>

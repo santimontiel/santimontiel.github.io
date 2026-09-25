@@ -5,6 +5,7 @@ import Header from "../components/Header.astro";
 import About from "../components/About.astro";
 import News from "../components/News.astro";
 import EntryCard from "../components/EntryCard.astro";
+import SectionHeading from "../components/SectionHeading.astro";
 import TeachingTable from "../components/TeachingTable.astro";
 import AdvisingTable from "../components/AdvisingTable.astro";
 import { SITE_AUTHOR_NAME, SITE_DESCRIPTION, SITE_TITLE } from "../consts";
@@ -12,7 +13,6 @@ import { teaching } from "../data/teaching";
 import { advising } from "../data/advising";
 import { formatAuthors, formatVenue, publicationBadge } from "../lib/formatUtils";
 
-import profilePic from "../assets/santi_photo.jpg";
 import { getCollection } from "astro:content";
 
 const news = (await getCollection("news")).sort(
@@ -36,42 +36,37 @@ const talks = (await getCollection("talks", ({ data }) => !data.draft)).sort(
 	<body>
 		<Header />
 		<main>
-			<h1>Hello, there! I'm Santi Montiel 🧙🏻‍♂️</h1>
-			<About image={profilePic} />
-			<style>
-				ul {
-					list-style-type: none;
-					margin: 0;
-					padding: 0;
-				}
-				.section-lead {
-					color: var(--text-secondary);
-				}
-			</style>
+			<About />
 
-			<h2>📰 News</h2>
-			{
-				news.map((item) => (
-					<News
-						date={item.data.date.toLocaleDateString("en-US", { month: "short", year: "numeric" })}
-						text={item.data.text}
-						link={item.data.link}
-					/>
-				))
-			}
-			<br />
+			<section class="section">
+				<SectionHeading number={1}>📰 News</SectionHeading>
+				<div class="news-list">
+					{
+						news.map((item) => (
+							<News
+								date={item.data.date.toLocaleDateString("en-US", {
+									month: "short",
+									year: "numeric",
+								})}
+								text={item.data.text}
+								link={item.data.link}
+							/>
+						))
+					}
+				</div>
+			</section>
 
-			<section>
-				<h2>📊 Research</h2>
+			<section class="section">
+				<SectionHeading number={2}>📊 Research</SectionHeading>
 				<p class="section-lead">
-					Here is a selection of my publications. For a full list, please
-					check <a
-						href="https://scholar.google.com/citations?user=C84lnbUAAAAJ"
+					A selection of my publications. For a full, up-to-date list, see the <a
+						href="/publications">publications page</a
+					> or <a href="https://scholar.google.com/citations?user=C84lnbUAAAAJ"
 						>Google Scholar</a
-					>. See also the full <a href="/publications">publications page</a>.
+					>.
 				</p>
 
-				<ul>
+				<ul class="entry-list">
 					{
 						publications.slice(0, 5).map((pub) => (
 							<li>
@@ -81,6 +76,7 @@ const talks = (await getCollection("talks", ({ data }) => !data.draft)).sort(
 									badge={publicationBadge(pub.data.type)}
 									meta={formatVenue(pub.data.venue, pub.data.type, pub.data.location)}
 									authors={formatAuthors(pub.data.authors.map((a) => a.name), SITE_AUTHOR_NAME)}
+									awards={pub.data.awards}
 								/>
 							</li>
 						))
@@ -88,46 +84,84 @@ const talks = (await getCollection("talks", ({ data }) => !data.draft)).sort(
 				</ul>
 			</section>
 
-			<h2>🗣️ Talks</h2>
-			<p class="section-lead">
-				See also the full <a href="/talks">talks page</a>.
-			</p>
-			<ul>
-				{
-					talks.map((talk) => {
-						const metaParts = [`📚 ${talk.data.venue}`];
-						if (talk.data.location) metaParts.push(`🌍 ${talk.data.location}`);
-						if (talk.data.link) metaParts.push(`🎥 <a href="${talk.data.link}">Watch</a>`);
-						return (
-							<li>
-								<EntryCard
-									title={talk.data.title}
-									heroImage={talk.data.heroImage}
-									meta={metaParts.join(" · ")}
-									authors={talk.data.description ?? ""}
-									compact
-								/>
-							</li>
-						);
-					})
-				}
-			</ul>
+			<section class="section">
+				<SectionHeading number={3}>🗣️ Talks</SectionHeading>
+				<p class="section-lead">
+					Invited talks and podcast appearances. See also the full <a href="/talks"
+						>talks page</a
+					>.
+				</p>
+				<ul class="entry-list">
+					{
+						talks.map((talk) => {
+							const metaParts = [`📚 ${talk.data.venue}`];
+							if (talk.data.location) metaParts.push(`🌍 ${talk.data.location}`);
+							if (talk.data.link) metaParts.push(`🎥 <a href="${talk.data.link}">Watch</a>`);
+							return (
+								<li>
+									<EntryCard
+										title={talk.data.title}
+										heroImage={talk.data.heroImage}
+										meta={metaParts.join(" · ")}
+										authors={talk.data.description ?? ""}
+										compact
+									/>
+								</li>
+							);
+						})
+					}
+				</ul>
+			</section>
 
-			<h2>📝 Teaching</h2>
-			<p class="section-lead">
-				I have taught the following courses as part of the curriculum of
-				my Ph.D. program as Teaching Assistant, supervised by Prof. Luis
-				M. Bergasa.
-			</p>
-			<TeachingTable rows={teaching} />
+			<section class="section">
+				<SectionHeading number={4}>📝 Teaching</SectionHeading>
+				<p class="section-lead">
+					Courses I have taught as a Teaching Assistant as part of my Ph.D.
+					programme, supervised by Prof. Luis M. Bergasa.
+				</p>
+				<TeachingTable rows={teaching} />
+			</section>
 
-			<p class="section-lead">
-				I have acted as co-supervisor of the following academic works
-				jointly with Prof. Luis M. Bergasa, guiding the students in
-				their research projects:
-			</p>
-			<AdvisingTable rows={advising} />
+			<section class="section">
+				<SectionHeading number={5}>🎓 Advising</SectionHeading>
+				<p class="section-lead">
+					Academic works I have co-supervised jointly with Prof. Luis M. Bergasa,
+					guiding the students through their research projects.
+				</p>
+				<AdvisingTable rows={advising} />
+			</section>
 		</main>
 		<Footer />
 	</body>
 </html>
+
+<style>
+	.section {
+		margin-top: 4rem;
+	}
+
+	.section-lead {
+		color: var(--text-secondary);
+		font-size: 0.95em;
+		max-width: 68ch;
+		margin: 0 0 1.25rem 0;
+	}
+
+	.news-list {
+		display: flex;
+		flex-direction: column;
+		gap: 0.6rem;
+	}
+
+	.entry-list {
+		list-style-type: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	@media (max-width: 720px) {
+		.section {
+			margin-top: 3rem;
+		}
+	}
+</style>

@@ -43,6 +43,8 @@
 	--badge-workshop-text: #ffffff;
 	--badge-fallback-bg: #6b7280;
 	--badge-fallback-text: #ffffff;
+	--award-bg: #fef3c7;
+	--award-text: #92400e;
 
 	--radius-sm: 6px;
 	--radius-md: 10px;
@@ -84,6 +86,8 @@
 	--badge-workshop-text: #fb923c;
 	--badge-fallback-bg: rgba(148, 163, 184, 0.18);
 	--badge-fallback-text: #cbd5e1;
+	--award-bg: rgba(250, 204, 21, 0.16);
+	--award-text: #fcd34d;
 }
 
 /* CSS-only dark mode for visitors with JavaScript disabled: if the
@@ -118,6 +122,8 @@
 		--badge-workshop-text: #fb923c;
 		--badge-fallback-bg: rgba(148, 163, 184, 0.18);
 		--badge-fallback-text: #cbd5e1;
+		--award-bg: rgba(250, 204, 21, 0.16);
+		--award-text: #fcd34d;
 	}
 }
 
@@ -131,14 +137,16 @@ body {
 	overflow-wrap: break-word;
 	color: var(--text-primary);
 	font-size: 18px;
-	line-height: 1.5;
+	line-height: 1.6;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 	transition: background-color 0.2s ease, color 0.2s ease;
 }
 main {
-	width: 900px;
+	width: var(--content-width);
 	max-width: calc(100% - 2em);
 	margin: auto;
-	padding: 3em 1em;
+	padding: 4rem 1em 6rem 1em;
 }
 h1,
 h2,
@@ -151,13 +159,16 @@ h6 {
 	font-family: 'Space Grotesk', 'Inter', ui-sans-serif, system-ui, sans-serif;
 	font-weight: 600;
 	font-size: 1em;
+	line-height: 1.25;
+	letter-spacing: -0.01em;
 }
 h1 {
-	font-size: 2em;
+	font-size: clamp(2rem, 1.5rem + 2vw, 2.6rem);
 	font-weight: 700;
+	letter-spacing: -0.02em;
 }
 h2 {
-	font-size: 1.4em;
+	font-size: 1.45em;
 }
 h3 {
 	font-size: 1.3em;
@@ -174,9 +185,18 @@ b {
 }
 a {
 	color: var(--accent);
+	text-decoration-color: color-mix(in srgb, currentColor 35%, transparent);
+	text-underline-offset: 0.18em;
+	transition: color 0.15s ease, text-decoration-color 0.15s ease;
 }
 a:hover {
 	color: var(--accent-hover);
+	text-decoration-color: currentColor;
+}
+:is(a, button, summary, [tabindex]):focus-visible {
+	outline: 2px solid var(--accent);
+	outline-offset: 3px;
+	border-radius: var(--radius-sm);
 }
 p {
 	margin-bottom: 0.6em;
@@ -228,7 +248,7 @@ hr {
 		font-size: 18px;
 	}
 	main {
-		padding: 1em;
+		padding: 2.5rem 1em 4rem 1em;
 	}
 }
 
