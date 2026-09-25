@@ -1,14 +1,20 @@
 ---
-import type { ImageMetadata } from 'astro';
-
-interface Props {
-	image: ImageMetadata;
-}
-
-const { image } = Astro.props;
+import PhotoCarousel from './PhotoCarousel.astro';
+import { heroGallery } from '../data/gallery';
 ---
 
 <article class="about-section">
+    <div class="about-hero">
+        <PhotoCarousel photos={heroGallery} />
+        <div class="about-intro">
+            <h1 class="about-name">Santi Montiel <span class="about-wizard" role="img" aria-label="wizard">🧙🏻‍♂️</span></h1>
+            <p class="about-role">
+                Ph.D. Student in Camera&ndash;RADAR Fusion for Autonomous Driving
+                <span class="about-affiliation">RobeSafe Research Group &middot; University of Alcalá</span>
+            </p>
+        </div>
+    </div>
+
     <div class="about-content">
         <p class="about-description">
             I'm <b>Santi Montiel</b>, a PhD student at the University of Alcalá,
@@ -26,10 +32,11 @@ const { image } = Astro.props;
                 >Prof. Luis M. Bergasa</a
             > and <a href="https://allamazares.jimdofree.com/"
                 >Dr. Ángel Llamazares</a
-            >, at the <b>RobeSafe Research Group</b> of
-            <a href="https://www.uah.es/"><b>University of Alcalá</b></a>. I carried
-            out a research internship at the <b>Intelligent Vehicles Lab</b> of
-            <a href="https://www.tudelft.nl/en/"
+            >, at the <b>RobeSafe Research Group</b> of <a href="https://www.uah.es/"
+                ><b>University of Alcalá</b></a
+            >. I carried out a research internship at the <b
+                >Intelligent Vehicles Lab</b
+            > of <a href="https://www.tudelft.nl/en/"
                 ><b>Delft University of Technology</b></a
             >, under the supervision of <a
                 href="https://sites.google.com/it-caesar.de/homepage/"
@@ -62,40 +69,66 @@ const { image } = Astro.props;
             ></span>
         </p>
     </div>
-    <div class="about-image">
-        <img src={image.src} alt="Profile picture" />
-    </div>
 </article>
 
 <style>
     .about-section {
+        margin-bottom: 1rem;
+    }
+
+    /* Carousel on the left, name + role on the right; the bio below runs
+       the full column width. */
+    .about-hero {
         display: flex;
-        align-items: flex-start;
-        gap: 2rem;
+        align-items: center;
+        gap: 2.25rem;
         margin-bottom: 2rem;
     }
 
-    .about-image img {
-        width: 300px;
-        height: 360px;
-        object-fit: cover;
-        border-radius: var(--radius-lg);
-        box-shadow: var(--shadow-md);
+    .about-intro {
+        flex: 1;
+        min-width: 0;
+        /* Name and role sit flush against the right edge of the column,
+           with the carousel anchoring the left. */
+        text-align: right;
     }
 
     .about-content {
-        flex: 1;
+        min-width: 0;
     }
 
-    .about-title {
-        margin: 0.2rem 0;
-        font-size: 1.1rem;
+    .about-name {
+        margin: 0;
+        font-size: clamp(2rem, 1.5rem + 2vw, 2.6rem);
+        letter-spacing: -0.02em;
+        line-height: 1.1;
+    }
+
+    /* Slightly smaller than the name so the glyph sits on the cap height
+       rather than towering over it. */
+    .about-wizard {
+        font-size: 0.8em;
+        white-space: nowrap;
+    }
+
+    /* Role + affiliation strapline, directly under the name. */
+    .about-role {
+        margin: 0.6rem 0 0 0;
+        color: var(--text-secondary);
+        font-family: 'Space Grotesk', 'Inter', ui-sans-serif, system-ui, sans-serif;
+        font-size: 1rem;
+        line-height: 1.45;
+    }
+
+    .about-affiliation {
+        display: block;
+        color: var(--text-tertiary);
+        font-size: 0.9rem;
     }
 
     .about-description {
         margin: 0;
         color: var(--text-secondary);
-        text-align: justify;
     }
 
     .about-description b {
@@ -104,11 +137,11 @@ const { image } = Astro.props;
     }
 
     .about-description a b {
-        color: var(--accent-300);
+        color: inherit;
     }
 
     .about-more-label {
-        margin: 1em 0 0.5em 0;
+        margin: 1.4em 0 0.6em 0;
         color: var(--text-secondary);
     }
 
@@ -148,28 +181,18 @@ const { image } = Astro.props;
     }
 
     /* Responsive design */
-    @media (max-width: 768px) {
-        .about-section {
+    @media (max-width: 640px) {
+        .about-hero {
             flex-direction: column;
+            align-items: flex-start;
             gap: 1.5rem;
+            margin-bottom: 1.75rem;
         }
 
-        .about-image {
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            order: 2; /* Ensures image comes after content */
-        }
-
-        .about-content {
-            order: 1; /* Ensures content comes first */
-        }
-
-        .about-image img {
-            width: 100%;
-            max-height: 300px;
-            max-width: 300px;
-            height: auto;
+        /* Stacked, there is no photo to balance against, so go back to
+           reading left-to-right. */
+        .about-intro {
+            text-align: left;
         }
     }
 </style>

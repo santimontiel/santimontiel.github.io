@@ -1,0 +1,207 @@
+---
+// PhotoCarousel.astro
+// Hero gallery: one photo at a time in a fixed frame, with left/right arrows
+// that wrap around in both directions. Same card treatment as PhotoStrip —
+// hairline frame, clipped hover zoom — at the original hero size.
+import { Image } from 'astro:assets';
+import type { GalleryPhoto } from '../data/gallery';
+
+interface Props {
+	photos: GalleryPhoto[];
+	/** Frame size in px. */
+	width?: number;
+	height?: number;
+}
+
+const { photos, width = 200, height = 240 } = Astro.props;
+---
+
+<div class="photo-carousel" style={`--card-w:${width}px; --card-h:${height}px;`}>
+	<div class="photo-carousel-frame">
+		{
+			photos.map((photo, i) => (
+				<div class:list={['carousel-slide', { 'is-active': i === 0 }]} data-slide={i} aria-hidden={i === 0 ? undefined : 'true'}>
+					<Image
+						src={photo.src}
+						alt={photo.alt}
+						width={width * 2}
+						height={height * 2}
+						loading={i === 0 ? 'eager' : 'lazy'}
+						style={photo.focus ? `object-position:${photo.focus}` : undefined}
+					/>
+				</div>
+			))
+		}
+	</div>
+
+	<div class="photo-carousel-controls">
+		<button type="button" class="carousel-arrow" data-dir="-1" aria-label="Previous photo">
+			<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>
+		</button>
+		<button type="button" class="carousel-arrow" data-dir="1" aria-label="Next photo">
+			<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg>
+		</button>
+		<span class="carousel-count" aria-hidden="true">
+			<span data-current>1</span> / {photos.length}
+		</span>
+	</div>
+
+	<p class="photo-carousel-caption" aria-live="polite">{photos[0]?.caption}</p>
+
+	<script is:inline type="application/json" data-captions set:html={JSON.stringify(photos.map((p) => p.caption ?? ''))} />
+</div>
+
+<style>
+	.photo-carousel {
+		flex: 0 0 auto;
+		width: var(--card-w);
+	}
+
+	/* Fixed frame, so switching photos never shifts the layout. Clips the
+	   hover zoom the same way the strip cards do. */
+	.photo-carousel-frame {
+		position: relative;
+		width: var(--card-w);
+		height: var(--card-h);
+		overflow: hidden;
+		border-radius: var(--radius-md);
+		border: 1px solid var(--border-subtle);
+		background: var(--bg-surface-sunken);
+		transition: border-color 0.2s ease, box-shadow 0.2s ease;
+	}
+
+	.photo-carousel-frame:hover {
+		border-color: var(--border-default);
+		box-shadow: var(--shadow-md);
+	}
+
+	.carousel-slide {
+		position: absolute;
+		inset: 0;
+		opacity: 0;
+		transition: opacity 0.4s ease;
+		pointer-events: none;
+	}
+
+	.carousel-slide.is-active {
+		opacity: 1;
+		pointer-events: auto;
+	}
+
+	.carousel-slide img {
+		display: block;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		transition: transform 0.4s cubic-bezier(0.2, 0.7, 0.3, 1);
+	}
+
+	.photo-carousel-frame:hover .carousel-slide.is-active img {
+		transform: scale(1.03);
+	}
+
+	.photo-carousel-controls {
+		display: flex;
+		align-items: center;
+		gap: 0.4rem;
+		margin-top: 0.7rem;
+	}
+
+	.carousel-arrow {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 28px;
+		height: 28px;
+		padding: 0;
+		background: transparent;
+		border: 1px solid var(--border-subtle);
+		border-radius: var(--radius-sm);
+		color: var(--text-secondary);
+		cursor: pointer;
+		transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
+	}
+
+	.carousel-arrow:hover {
+		border-color: var(--accent);
+		color: var(--accent);
+		background: var(--accent-muted);
+	}
+
+	.carousel-arrow svg {
+		width: 15px;
+		height: 15px;
+		fill: none;
+		stroke: currentColor;
+		stroke-width: 2;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+	}
+
+	.carousel-count {
+		margin-left: auto;
+		font-size: 0.72rem;
+		color: var(--text-tertiary);
+		font-variant-numeric: tabular-nums;
+	}
+
+	.photo-carousel-caption {
+		margin: 0.55rem 0 0 0;
+		font-size: 0.78rem;
+		line-height: 1.4;
+		color: var(--text-tertiary);
+		/* Room for two lines, so the tallest caption doesn't bump the bio
+		   down when it comes round. */
+		min-height: 2.8em;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.carousel-slide,
+		.carousel-slide img {
+			transition: none;
+		}
+
+		.photo-carousel-frame:hover .carousel-slide.is-active img {
+			transform: none;
+		}
+	}
+</style>
+
+<script>
+	document.querySelectorAll<HTMLElement>('.photo-carousel').forEach((root) => {
+		const slides = Array.from(root.querySelectorAll<HTMLElement>('.carousel-slide'));
+		const caption = root.querySelector<HTMLElement>('.photo-carousel-caption');
+		const counter = root.querySelector<HTMLElement>('[data-current]');
+		const store = root.querySelector<HTMLElement>('[data-captions]');
+		if (slides.length < 2 || !store) return;
+
+		const captions: string[] = JSON.parse(store.textContent || '[]');
+		let index = 0;
+
+		function go(delta: number) {
+			slides[index].classList.remove('is-active');
+			slides[index].setAttribute('aria-hidden', 'true');
+			// Modulo twice so stepping back from the first photo wraps to the
+			// last rather than landing on a negative index.
+			index = (index + delta + slides.length) % slides.length;
+			slides[index].classList.add('is-active');
+			slides[index].removeAttribute('aria-hidden');
+			if (caption) caption.textContent = captions[index] ?? '';
+			if (counter) counter.textContent = String(index + 1);
+		}
+
+		root.querySelectorAll<HTMLButtonElement>('.carousel-arrow').forEach((btn) => {
+			btn.addEventListener('click', () => go(Number(btn.dataset.dir)));
+		});
+
+		root.addEventListener('keydown', (event) => {
+			if (event.key === 'ArrowLeft') {
+				event.preventDefault();
+				go(-1);
+			} else if (event.key === 'ArrowRight') {
+				event.preventDefault();
+				go(1);
+			}
+		});
+	});
+</script>
